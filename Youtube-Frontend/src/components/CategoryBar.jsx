@@ -1,4 +1,7 @@
+import { useState } from "react";
+
 const categories = [
+  "All",
   "Music",
   "Gaming",
   "Live",
@@ -9,12 +12,19 @@ const categories = [
 ];
 
 const CategoryBar = () => {
+  const [selected, setSelected] = useState("All");
+
   return (
     <div className="flex w-full md:justify-center gap-3 overflow-x-auto p-3">
       {categories.map((category) => (
         <button
           key={category}
-          className="px-3 py-1 rounded-lg bg-gray-100 focus:bg-gray-500 whitespace-nowrap"
+          onClick={() => setSelected(category)}
+          className={`px-3 py-1 rounded-lg whitespace-nowrap transition-colors ${
+            selected === category
+              ? "bg-black text-white"
+              : "bg-gray-100 hover:bg-gray-200"
+          }`}
         >
           {category}
         </button>

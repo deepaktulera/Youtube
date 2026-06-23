@@ -1,20 +1,32 @@
-import React from 'react';
+import React from "react";
+import { Link } from "react-router-dom";
 
 const VideoCard = () => {
   return (
-    <div className='w-full rounded-2xl'>
-      <div className=''>
-        <img src="https://images.unsplash.com/photo-1630563451961-ac2ff27616ab?crop=entropy&cs=srgb&fm=jpg&ixid=M3w5MjY1MDh8MHwxfHNlYXJjaHwxfHxhcHBsZXxlbnwwfHx8fDE3NzY0MDU1MzJ8MA&ixlib=rb-4.1.0&q=85" alt="" className='w-full rounded-2xl h-60 object-cover object-center' />
+    <Link to={'/watch/:id'} className="w-full p-2 rounded-2xl">
+      <div className="overflow-hidden rounded-2xl group">
+        <img
+          src="https://images.unsplash.com/photo-1630563451961-ac2ff27616ab?crop=entropy&cs=srgb&fm=jpg&ixid=M3w5MjY1MDh8MHwxfHNlYXJjaHwxfHxhcHBsZXxlbnwwfHx8fDE3NzY0MDU1MzJ8MA&ixlib=rb-4.1.0&q=85"
+          alt="video_url"
+          className="w-full h-60 object-cover object-center rounded-2xl transition-transform duration-700 group-hover:scale-105"
+        />
       </div>
-      <div className='flex gap-2 items-center'>
-        <div className='h-5 w-5'><img src="https://www.bing.com/th/id/OIP.hXWwNOQw15ZVWKlMs-xv0wHaFQ?w=193&h=137&c=8&rs=1&qlt=90&o=6&pid=3.1&rm=2" alt="" className='object-cover w-full h-full rounded-full' /></div>
+
+      <div className="flex gap-2 items-center mt-2">
+        <div className="h-10 w-10">
+          <img
+            src="https://www.bing.com/th/id/OIP.hXWwNOQw15ZVWKlMs-xv0wHaFQ?w=193&h=137&c=8&rs=1&qlt=90&o=6&pid=3.1&rm=2"
+            alt="logo"
+            className="object-cover w-full h-full rounded-full"
+          />
+        </div>
         <div>
-            <h2>The js</h2>
-            <h2>Harry</h2>
+          <h2>The JS</h2>
+          <h2>Harry</h2>
         </div>
       </div>
-    </div>
+    </Link>
   );
-}
+};
 
 export default VideoCard;

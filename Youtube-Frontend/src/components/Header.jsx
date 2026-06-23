@@ -4,7 +4,7 @@ import CategoryBar from "./CategoryBar";
 
 const Header = () => {
   return (
-    <section className="bg-white w-full h-fit fixed top-0">
+    <section className="bg-white w-full h-fit z-100 fixed top-0">
       <Navbar />
       <CategoryBar />
     </section>
