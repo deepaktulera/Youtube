@@ -4,7 +4,7 @@ import { Search, Menu, Bell, Plus } from "lucide-react";
 const Header = () => {
   return (
     // Main navigation bar
-    <nav className="flex items-center justify-between gap-2 sticky top-0 h-14 px-4 bg-white z-50">
+    <nav className="flex items-center justify-between gap-2 sticky top-0 h-14 px-5 bg-white z-50">
 
       {/* Left section - hamburger menu + logo */}
       <section className="flex items-center gap-4">
@@ -26,7 +26,7 @@ const Header = () => {
         <input
           type="text"
           placeholder="Search"
-          className="w-[450px] p-2 border border-gray-300 rounded-l-full px-5 outline-none"
+          className="w-[250px] p-2 border border-gray-300 rounded-l-full px-5 outline-none"
         />
 
         <button className="px-5 py-2 border border-l-0 border-gray-300 rounded-r-full bg-gray-50 hover:bg-gray-100 cursor-pointer">
