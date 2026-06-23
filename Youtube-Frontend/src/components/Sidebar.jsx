@@ -7,7 +7,7 @@ import userIcon from '../assets/icons/user.svg'
 
 const Sidebar = () => {
   return (
-    <aside className='hidden md:flex flex-col items-start'>
+    <aside className='hidden bg-white h-full md:flex fixed left-1 top-15 flex-col items-start'>
         <button className='flex w-16 h-18 gap-1 flex-col justify-center p-1 items-center hover:bottom-1 hover:bg-gray-200 rounded-xl'><img src={HomeIcon} alt="" /><span className='text-xs'>Home</span></button>
         <button className='flex w-16 h-18 gap-1 flex-col justify-center p-1 items-center hover:bottom-1 hover:bg-gray-200 rounded-xl'><img src={shortsIcon} alt="shorts"/><span className='text-xs'>Shorts</span></button>
         <button className='flex w-16 h-18 gap-1 flex-col justify-center p-1 items-center hover:bottom-1 hover:bg-gray-200 rounded-xl'><img src={subscribeIcon} alt=""/><span className='text-xs'>Subscription</span></button>

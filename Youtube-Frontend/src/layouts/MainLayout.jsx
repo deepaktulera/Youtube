@@ -6,14 +6,14 @@ const MainLayout = () => {
   return (
     <div className="h-screen">
       <Header />
-      <div className="flex">
-        <Sidebar />
-        <main className="flex-1 overflow-y-auto">
-          <Outlet />
-        </main>
-      </div>
+      <Sidebar />
+
+      <main className="pt-28 md:pl-20">
+        <Outlet />
+      </main>
     </div>
   );
 };
+
 
 export default MainLayout;
