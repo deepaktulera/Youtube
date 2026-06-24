@@ -15,7 +15,7 @@ const CategoryBar = () => {
   const [selected, setSelected] = useState("All");
 
   return (
-    <div className="flex w-full md:justify-center gap-3 overflow-x-auto p-3">
+    <div className="flex w-full fixed z-50 bg-white md:justify-center gap-3 overflow-x-auto p-3">
       {categories.map((category) => (
         <button
           key={category}

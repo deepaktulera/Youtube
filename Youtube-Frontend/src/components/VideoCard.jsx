@@ -21,8 +21,9 @@ const VideoCard = () => {
           />
         </div>
         <div>
-          <h2>The JS</h2>
-          <h2>Harry</h2>
+          <h2 className="text-sm font-semibold">The JS</h2>
+          <h2 className="text-xs">Harry</h2>
+          <h2 className="text-xs">13k Views</h2>
         </div>
       </div>
     </Link>
