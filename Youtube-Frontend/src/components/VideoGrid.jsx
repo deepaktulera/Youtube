@@ -3,7 +3,7 @@ import VideoCard from './VideoCard';
 
 const VideoGrid = () => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4 pt-16">
+    <div className="grid  grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4 pt-16">
       <VideoCard />
       <VideoCard />
       <VideoCard />

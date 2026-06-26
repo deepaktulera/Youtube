@@ -4,7 +4,7 @@ import Sidebar from "../components/Sidebar";
 import { useState } from "react";
 
 const MainLayout = () => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   function toggleSidebar() {
     setIsSidebarOpen(!isSidebarOpen);
@@ -16,7 +16,7 @@ const MainLayout = () => {
       <Sidebar isSidebarOpen={isSidebarOpen} />
       <main
         className={`pt-14 transition-all duration-300 ${
-          isSidebarOpen ? "md:pl-45" : "md:pl-14"
+          isSidebarOpen ? "md:pl-55" : "md:pl-14"
         }`}
       >
         <Outlet />
