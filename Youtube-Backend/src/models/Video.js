@@ -26,7 +26,7 @@ const VideoSchema = new mongoose.Schema(
     category: {
       type: String,
       required: true,
-      enum: [
+      elem: [
         "All",
         "Music",
         "Gaming",
