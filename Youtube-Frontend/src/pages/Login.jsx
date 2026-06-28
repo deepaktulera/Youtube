@@ -34,8 +34,9 @@ const Login = () => {
         },
       );
 
+      localStorage.setItem("token", res.data.token)
       navigate("/");
-
+      
       // Clear form
       setFormData({
         email: "",

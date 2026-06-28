@@ -3,6 +3,8 @@ import cors from 'cors';
 import connectDatabase from './src/config/databse.js';
 import dotenv from "dotenv";
 import route from './src/routes/auth.routes.js';
+import authRoute from './src/routes/auth.routes.js'
+import videoRoute from './src/routes/video.route.js'
 
 const app = express();
 
@@ -13,7 +15,8 @@ connectDatabase();
 app.use(express.json());
 app.use(cors());
 
-app.use("/auth", route);
+app.use("/auth", authRoute);
+app.use("/", videoRoute)
 
 const PORT = process.env.PORT || 3000;
 
