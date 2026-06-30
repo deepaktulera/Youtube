@@ -1,11 +1,14 @@
 import React from "react";
 import CategoryBar from "./CategoryBar";
-import { Search, Menu, Bell, Plus ,User} from "lucide-react";
+import { Search, Menu, Bell, Plus, User } from "lucide-react";
 import { Link } from "react-router-dom";
 import userIcon from "../assets/icons/user.svg";
 
 const Header = ({ toggleSidebar }) => {
-  const token = localStorage.removeItem("token");
+  const token = localStorage.getItem("token");
+  const username = localStorage.getItem("username");
+
+  const firstLetter = username ? username.charAt(0).toUpperCase() : "";
 
   return (
     <nav className="flex bg-white w-full items-center justify-between gap-2 fixed top-0 h-14 px-5 pt-1 z-50">
@@ -53,14 +56,14 @@ const Header = ({ toggleSidebar }) => {
         {/* User profile avatar */}
         {token ? (
           <div className="w-9 h-9 rounded-full bg-blue-500 text-white flex items-center justify-center font-semibold cursor-pointer">
-            B
+            {firstLetter}
           </div>
         ) : (
           <Link
             to="/login"
             className="flex px-1 gap-1 py-1 border-2 border-blue-400 rounded-full"
           >
-            <User color="blue"/> 
+            <User color="blue" />
             <span className="text-blue-700 font-bold">Sign</span>
           </Link>
         )}

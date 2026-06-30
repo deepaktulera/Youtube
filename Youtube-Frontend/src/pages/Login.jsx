@@ -35,6 +35,7 @@ const Login = () => {
       );
 
       localStorage.setItem("token", res.data.token)
+      localStorage.setItem("username", res.data.username);
       navigate("/");
       
       // Clear form
@@ -47,6 +48,7 @@ const Login = () => {
       alert(error.response?.data?.message || "Something went wrong");
     }
   };
+  
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">

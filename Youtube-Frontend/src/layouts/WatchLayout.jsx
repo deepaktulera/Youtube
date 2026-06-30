@@ -18,7 +18,7 @@ const WatchLayout = () => {
 
       <main
         className={`pt-15 transition-all duration-300 ${
-          isSidebarOpen ? "md:pl-40" : "md:pl-5"
+          isSidebarOpen ? "lg:pl-40" : "lg:pl-5"
         }`}
       >
         <Outlet />

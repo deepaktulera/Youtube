@@ -100,6 +100,7 @@ export const loginUser = async (req, res) => {
     // send token to client
     res.status(200).json({
       token,
+      username: user.username,
     });
   } catch (error) {
     // server side error
