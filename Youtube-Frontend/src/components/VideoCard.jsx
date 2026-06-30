@@ -8,7 +8,7 @@ const VideoCard = () => {
         <img
           src="https://images.unsplash.com/photo-1630563451961-ac2ff27616ab?crop=entropy&cs=srgb&fm=jpg&ixid=M3w5MjY1MDh8MHwxfHNlYXJjaHwxfHxhcHBsZXxlbnwwfHx8fDE3NzY0MDU1MzJ8MA&ixlib=rb-4.1.0&q=85"
           alt="video_url"
-          className="w-full h-60 object-cover object-center rounded-2xl transition-transform duration-700 group-hover:scale-105"
+          className="w-full h-70 object-cover object-center rounded-2xl transition-transform duration-700 group-hover:scale-105"
         />
       </div>
 

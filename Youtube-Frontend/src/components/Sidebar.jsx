@@ -36,7 +36,7 @@ const Sidebar = ({ isSidebarOpen }) => {
     fixed top-14 left-0 h-[calc(100vh-56px)]
     bg-white z-50 transition-all duration-300 overflow-hidden
 
-    ${isSidebarOpen ? "w-56" : "w-0 md:w-16"}
+    ${isSidebarOpen ? "w-50" : "w-0 md:w-16"}
   `}
     >
       {menuItems.map((item) => (

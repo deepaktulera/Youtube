@@ -5,6 +5,8 @@ import MainLayout from "../layouts/MainLayout";
 import Shorts from "../pages/Shorts";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
+import VideoPlayer from "../pages/VideoPlayer";
+import WatchLayout from "../layouts/WatchLayout";
 
 const AppRoutes = () => {
   return (
@@ -13,8 +15,11 @@ const AppRoutes = () => {
         <Route path="/" element={<Home />} />
         <Route path="/shorts" element={<Shorts />} />
       </Route>
-      <Route path="/login" element={<Login />} ></Route>
-      <Route path="/register" element={<Register />} ></Route>
+      <Route path="/login" element={<Login />}></Route>
+      <Route path="/register" element={<Register />}></Route>
+      <Route element={<WatchLayout />}>
+        <Route path="/watch/:id" element={<VideoPlayer />} />
+      </Route>
     </Routes>
   );
 };
