@@ -3,20 +3,22 @@ import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
 import { useState } from "react";
 
-const MainLayout = () => {
+const HomeLayout = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-  function toggleSidebar() {
-    setIsSidebarOpen(!isSidebarOpen);
-  }
+  const toggleSidebar = () => {
+    setIsSidebarOpen((prev) => !prev);
+  };
 
   return (
-    <div className="h-screen">
+    <div className="min-h-screen">
       <Header toggleSidebar={toggleSidebar} />
+
       <Sidebar isSidebarOpen={isSidebarOpen} />
+
       <main
         className={`pt-14 transition-all duration-300 ${
-          isSidebarOpen ? "md:pl-55" : "md:pl-14"
+          isSidebarOpen ? "md:pl-52" : "md:pl-16"
         }`}
       >
         <Outlet />
@@ -25,4 +27,4 @@ const MainLayout = () => {
   );
 };
 
-export default MainLayout;
+export default HomeLayout;

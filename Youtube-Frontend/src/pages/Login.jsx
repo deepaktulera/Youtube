@@ -1,17 +1,18 @@
 import React, { useState } from "react";
-import { Link , useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Logo from "/YouTube-Logo.svg";
 import axios from "axios";
 
 const Login = () => {
   const navigate = useNavigate();
 
+  const [loading, setLoading] = useState(false);
+
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
 
-  // Handle input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
 
@@ -21,9 +22,10 @@ const Login = () => {
     }));
   };
 
-  // Handle form submit
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    setLoading(true);
 
     try {
       const res = await axios.post(
@@ -31,24 +33,28 @@ const Login = () => {
         {
           email: formData.email,
           password: formData.password,
-        },
+        }
       );
 
-      localStorage.setItem("token", res.data.token)
-      localStorage.setItem("username", res.data.username);
-      navigate("/");
-      
-      // Clear form
+      const { token, username, name } = res.data;
+
+      localStorage.setItem("token", token);
+      localStorage.setItem("username", username);
+      localStorage.setItem("name", name);
+
       setFormData({
         email: "",
         password: "",
       });
+
+      navigate("/");
     } catch (error) {
       console.log(error.response?.data || error.message);
       alert(error.response?.data?.message || "Something went wrong");
+    } finally {
+      setLoading(false);
     }
   };
-  
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
@@ -86,9 +92,10 @@ const Login = () => {
 
           <button
             type="submit"
-            className="w-full bg-red-600 text-white py-3 rounded-lg hover:bg-red-700 transition"
+            disabled={loading}
+            className="w-full bg-red-600 text-white py-3 rounded-lg hover:bg-red-700 transition disabled:bg-red-400 disabled:cursor-not-allowed"
           >
-            Login
+            {loading ? "Logging in..." : "Login"}
           </button>
         </form>
 

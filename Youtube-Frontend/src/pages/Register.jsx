@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Logo from "/YouTube-Logo.svg";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Register = () => {
   const [formData, setFormData] = useState({
+    name: "",
     username: "",
     email: "",
     password: "",
@@ -20,6 +22,7 @@ const Register = () => {
       [name]: value,
     }));
   };
+  const navigate = useNavigate();
 
   // Handle form submit
   const handleSubmit = async (e) => {
@@ -34,25 +37,25 @@ const Register = () => {
       const res = await axios.post(
         `${import.meta.env.VITE_API_URL}/auth/register`,
         {
+          name: formData.name,
           username: formData.username,
           email: formData.email,
           password: formData.password,
-        }
+        },
       );
 
-      console.log(res.data);
       alert("Registration Successful!");
 
-      // Clear form
       setFormData({
+        name: "",
         username: "",
         email: "",
         password: "",
         confirmPassword: "",
       });
 
+      navigate("/login");
     } catch (error) {
-      console.log(error.response?.data || error.message);
       alert(error.response?.data?.message || "Something went wrong");
     }
   };
@@ -63,20 +66,27 @@ const Register = () => {
         <div className="flex justify-center mb-6">
           <img
             src={Logo}
-            alt="YouTube"
-            className="h-25"
+            alt="VideoTube"
+            className="h-15 w-auto object-contain"
           />
         </div>
 
-        <h2 className="text-3xl font-semibold text-center">
-          Create Account
-        </h2>
+        <h2 className="text-2xl font-semibold text-center">Create Account</h2>
 
         <p className="text-gray-500 text-center mt-2 mb-6">
           Join and start watching your favourite videos.
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-5">
+          <input
+            type="text"
+            name="name"
+            placeholder="Full Name"
+            value={formData.name}
+            onChange={handleChange}
+            required
+            className="w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-red-500"
+          />
 
           <input
             type="text"
@@ -85,7 +95,7 @@ const Register = () => {
             value={formData.username}
             onChange={handleChange}
             required
-            className="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-red-500"
+            className="w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-red-500"
           />
 
           <input
@@ -95,7 +105,7 @@ const Register = () => {
             value={formData.email}
             onChange={handleChange}
             required
-            className="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-red-500"
+            className="w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-red-500"
           />
 
           <input
@@ -105,7 +115,7 @@ const Register = () => {
             value={formData.password}
             onChange={handleChange}
             required
-            className="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-red-500"
+            className="w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-red-500"
           />
 
           <input
@@ -115,7 +125,7 @@ const Register = () => {
             value={formData.confirmPassword}
             onChange={handleChange}
             required
-            className="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-red-500"
+            className="w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-red-500"
           />
 
           <button
@@ -124,7 +134,6 @@ const Register = () => {
           >
             Register
           </button>
-
         </form>
 
         <p className="text-center text-gray-600 mt-6">

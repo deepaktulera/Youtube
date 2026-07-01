@@ -1,8 +1,12 @@
-*{
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Dancing+Script:wght@400..700&family=Lora:ital,wght@0,400..700;1,400..700&display=swap");
+
+@import "tailwindcss";
+
+* {
   box-sizing: border-box;
+  font-family: "DM Sans", sans-serif;
 }
 
-::-webkit-scrollbar{
-  display: none
+::-webkit-scrollbar {
+  display: none;
 }
-@import "tailwindcss";

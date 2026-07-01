@@ -6,46 +6,53 @@ import jwt from "jsonwebtoken";
 export const registerUser = async (req, res) => {
   try {
     // get data from request body
-    const { username, email, password } = req.body;
+    const { name, username, email, password } = req.body;
 
     // check all field is filled or not
-    if (!username || !email || !password) {
+    if (!name || !username || !email || !password) {
       return res.status(400).json({
         message: "All fields are required",
       });
     }
 
-    // finding user with same email
-    const userExists = await User.findOne({ email });
+    // check email already exists
+    const emailExists = await User.findOne({ email });
 
-    // if user already there then stop register
-    if (userExists) {
+    if (emailExists) {
       return res.status(400).json({
-        message: "User already exists",
+        message: "Email already exists",
       });
     }
 
-    // hash password before save in db
+    // check username already exists
+    const usernameExists = await User.findOne({ username });
+
+    if (usernameExists) {
+      return res.status(400).json({
+        message: "Username already exists",
+      });
+    }
+
+    // hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // creating new user
+    // create user
     const user = await User.create({
+      name,
       username,
       email,
       password: hashedPassword,
     });
 
-    // send success response
     res.status(201).json({
       message: "User Registered Successfully",
       user: {
         id: user._id,
+        name: user.name,
         username: user.username,
-        email: user.email,
       },
     });
   } catch (error) {
-    // if any error come
     res.status(500).json({
       message: error.message,
     });
@@ -100,6 +107,7 @@ export const loginUser = async (req, res) => {
     // send token to client
     res.status(200).json({
       token,
+      name:user.name,
       username: user.username,
     });
   } catch (error) {

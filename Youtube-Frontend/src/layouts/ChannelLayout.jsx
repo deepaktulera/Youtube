@@ -1,9 +1,9 @@
-import { Outlet } from "react-router-dom";
+import React, { useState } from "react";
 import Header from "../components/Header";
 import Sidebar from "../components/Sidebar";
-import { useState } from "react";
+import { Outlet } from "react-router-dom";
 
-const WatchLayout = () => {
+const ChannelLayout = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const toggleSidebar = () => {
@@ -18,7 +18,7 @@ const WatchLayout = () => {
 
       <main
         className={`pt-15 transition-all duration-300 ${
-          isSidebarOpen ? "lg:pl-40" : "lg:pl-5"
+          isSidebarOpen ? "lg:pl-40" : "lg:pl-20"
         }`}
       >
         <Outlet />
@@ -27,4 +27,4 @@ const WatchLayout = () => {
   );
 };
 
-export default WatchLayout;
+export default ChannelLayout;

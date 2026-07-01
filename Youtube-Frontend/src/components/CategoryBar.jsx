@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 
 const categories = [
   "All",
@@ -12,23 +12,33 @@ const categories = [
 ];
 
 const CategoryBar = () => {
-  const [selected, setSelected] = useState("All");
+  const [activeCategory, setActiveCategory] = useState("All");
+
+  const handleCategoryClick = (category) => {
+    setActiveCategory(category);
+
+    // Later you can filter videos here
+    // console.log(category);
+  };
 
   return (
-    <div className="flex w-full fixed z-50 bg-white md:justify-center gap-3 overflow-x-auto p-3">
-      {categories.map((category) => (
-        <button
-          key={category}
-          onClick={() => setSelected(category)}
-          className={`px-3 py-1 rounded-lg whitespace-nowrap transition-colors ${
-            selected === category
-              ? "bg-black text-white"
-              : "bg-gray-100 hover:bg-gray-200"
-          }`}
-        >
-          {category}
-        </button>
-      ))}
+    <div className="fixed top-14 left-0 right-0 z-40 bg-white flex justify-center">
+      <div className="flex items-center gap-3 overflow-x-auto whitespace-nowrap px-4 py-3 scrollbar-hide">
+        {categories.map((category) => (
+          <button
+            key={category}
+            type="button"
+            onClick={() => handleCategoryClick(category)}
+            className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
+              activeCategory === category
+                ? "bg-black text-white"
+                : "bg-gray-100 hover:bg-gray-200"
+            }`}
+          >
+            {category}
+          </button>
+        ))}
+      </div>
     </div>
   );
 };
