@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Search, Menu, Bell, Plus, User, ArrowLeft } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link} from "react-router-dom";
 
 const Header = ({ toggleSidebar }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -79,10 +79,13 @@ const Header = ({ toggleSidebar }) => {
             </button>
 
             {/* Create */}
-            <button className="flex items-center gap-1 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-full cursor-pointer">
+            <Link
+              to="/upload"
+              className="flex items-center gap-1 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-full"
+            >
               <Plus strokeWidth={1.5} size={20} />
               <span className="hidden md:block">Create</span>
-            </button>
+            </Link>
 
             {/* Notifications */}
             <button className="p-2 hover:bg-gray-100 rounded-full cursor-pointer">

@@ -11,6 +11,8 @@ import Login from "../pages/Login";
 import Register from "../pages/Register";
 import VideoPlayer from "../pages/VideoPlayer";
 import Channel from "../pages/Channel";
+import UploadVideo from "../pages/UploadVideo";
+import NotFound from "../pages/NotFound";
 
 const AppRoutes = () => {
   return (
@@ -19,6 +21,7 @@ const AppRoutes = () => {
       <Route element={<HomeLayout />}>
         <Route path="/" element={<Home />} />
         <Route path="/shorts" element={<Shorts />} />
+        <Route path="/upload" element={<UploadVideo />} />
       </Route>
 
       {/* Authentication */}
@@ -38,11 +41,7 @@ const AppRoutes = () => {
       {/* 404 Page */}
       <Route
         path="*"
-        element={
-          <h1 className="text-center mt-20 text-3xl font-bold">
-            404 - Page Not Found
-          </h1>
-        }
+        element={<NotFound />}
       />
     </Routes>
   );
