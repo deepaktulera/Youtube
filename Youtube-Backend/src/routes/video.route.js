@@ -6,13 +6,14 @@ import {
   updateVideo,
   deleteVideo,
 } from "../controllers/video.controller.js";
+import { verifyToken } from "../middleware/verifyToken.js";
 
 const router = express.Router();
 
 router.get("/videos", fetchVideos);
 router.post("/video/upload", uploadVideo);
 router.get("/video/:id", fetchVideo);
-router.patch("/video/:id", updateVideo);
-router.delete("/video/:id", deleteVideo);
+router.patch("/video/:id",verifyToken ,  updateVideo);
+router.delete("/video/:id",verifyToken , deleteVideo);
 
 export default router;

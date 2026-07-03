@@ -49,7 +49,6 @@ const UploadVideo = () => {
       alert(error.response?.data?.message || "Something went wrong");
     }
   };
-  console.log(formData);
 
   return (
     <div className="w-full min-h-screen flex justify-center items-center p-5 bg-gray-100">

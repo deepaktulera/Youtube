@@ -2,28 +2,26 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import VideoCard from "./VideoCard";
 import Loader from "./Loader";
+import { getAllVideos } from "../services/videoService";
 
 const VideoGrid = () => {
-  const [videos, setVideos] = useState([]);
+  const [videos, setvideos] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     fetchVideos();
   }, []);
 
-  async function fetchVideos() {
+  const fetchVideos = async () => {
     try {
-      const res = await axios.get(
-        `${import.meta.env.VITE_API_URL}/videos`
-      );
-
-      setVideos(res.data);
+      const res = await getAllVideos();
+      setvideos(res.data);
     } catch (error) {
-      console.log(error.response?.data || error.message);
+      console.log(error);
     } finally {
       setLoading(false);
     }
-  }
+  };
 
   if (loading) {
     return <Loader />;

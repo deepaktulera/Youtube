@@ -2,6 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const VideoCard = ({ video }) => {
+  console.log(video);
+  
   return (
     <Link to={`/watch/${video._id}`} className="w-full p-2 rounded-2xl">
       <div className="overflow-hidden rounded-2xl group">
