@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Logo from "/YouTube-Logo.svg";
-import axios from "axios";
+import { loginUser } from "../services/authService";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -28,13 +28,10 @@ const Login = () => {
     setLoading(true);
 
     try {
-      const res = await axios.post(
-        `${import.meta.env.VITE_API_URL}/auth/login`,
-        {
-          email: formData.email,
-          password: formData.password,
-        }
-      );
+      const res = await loginUser({
+        email: formData.email,
+        password: formData.password,
+      });
 
       const { token, username, name } = res.data;
 
@@ -49,7 +46,6 @@ const Login = () => {
 
       navigate("/");
     } catch (error) {
-      console.log(error.response?.data || error.message);
       alert(error.response?.data?.message || "Something went wrong");
     } finally {
       setLoading(false);

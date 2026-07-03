@@ -64,7 +64,7 @@ const Channel = () => {
 
       {/* Videos */}
       <div className="px-4 sm:px-8 lg:px-10 py-6">
-        <ChannelVideos />
+        <ChannelVideos uploader={username}/>
       </div>
     </div>
   );

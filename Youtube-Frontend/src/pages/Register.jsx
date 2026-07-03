@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Logo from "/YouTube-Logo.svg";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { registerUser } from "../services/authService";
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -34,17 +34,14 @@ const Register = () => {
     }
 
     try {
-      const res = await axios.post(
-        `${import.meta.env.VITE_API_URL}/auth/register`,
-        {
-          name: formData.name,
-          username: formData.username,
-          email: formData.email,
-          password: formData.password,
-        },
-      );
+      const res = await registerUser({
+        name: formData.name,
+        username: formData.username,
+        email: formData.email,
+        password: formData.password,
+      });
 
-      alert("Registration Successful!");
+      alert(res.data.message || "Registration Successful!");
 
       setFormData({
         name: "",

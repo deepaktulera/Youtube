@@ -97,6 +97,20 @@ export const updateVideo = async (req, res) => {
   }
 };
 
+export const getChannelVideos = async (req, res) => {
+  try {
+    const { uploader } = req.params;
+
+    const videos = await Video.find({ uploader });
+    
+    res.status(200).json(videos);
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
 export const deleteVideo = async (req, res) => {
   try {
     const { id } = req.params;

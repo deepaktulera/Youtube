@@ -5,6 +5,7 @@ import dotenv from "dotenv";
 import route from './src/routes/auth.routes.js';
 import authRoute from './src/routes/auth.routes.js'
 import videoRoute from './src/routes/video.route.js'
+import channelRoute from './src/routes/channel.route.js'
 
 const app = express();
 
@@ -22,6 +23,7 @@ app.use(
 
 app.use("/auth", authRoute);
 app.use("/", videoRoute)
+app.use("/", channelRoute)
 
 const PORT = process.env.PORT || 3000;
 
