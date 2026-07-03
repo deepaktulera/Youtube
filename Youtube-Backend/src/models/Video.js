@@ -39,14 +39,12 @@ const VideoSchema = new mongoose.Schema(
     },
 
     channel: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Channel",
+      type: String,
       required: true,
     },
 
     uploader: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      type: String,
       required: true,
     },
 
@@ -74,7 +72,7 @@ const VideoSchema = new mongoose.Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
 const Video = mongoose.model("Video", VideoSchema);

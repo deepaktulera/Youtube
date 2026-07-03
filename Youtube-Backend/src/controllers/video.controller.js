@@ -17,6 +17,7 @@ export const fetchVideo = async (req, res) => {
     const { id } = req.params;
 
     const video = await Video.findById(id);
+
     if (!video) {
       return res.status(404).json({
         message: "Video not found",
@@ -24,14 +25,15 @@ export const fetchVideo = async (req, res) => {
     }
 
     res.status(200).json(video);
-  } catch (err) {
+  } catch (error) {
     res.status(500).json({
-      message: err.message,
+      message: error.message,
     });
   }
 };
 
 export const uploadVideo = async (req, res) => {
+
   try {
     const {
       title,
@@ -39,28 +41,82 @@ export const uploadVideo = async (req, res) => {
       thumbnailUrl,
       videoUrl,
       category,
-      channel,
       uploader,
-      comments,
+      channel,
     } = req.body;
 
-    const newVideo = new Video({
+    const newVideo = await Video.create({
       title,
       description,
       thumbnailUrl,
       videoUrl,
       category,
-      channel,
       uploader,
-      comments,
+      channel,
     });
 
-    await newVideo.save();
-
-    res.status(201).json(newVideo);
-  } catch (err) {
+    res.status(201).json({
+      message: "Video uploaded successfully",
+      video: newVideo,
+    });
+  } catch (error) {
     res.status(500).json({
-      message: err.message,
+      message: error.message,
+    });
+  }
+};
+
+export const updateVideo = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const updatedVideo = await Video.findByIdAndUpdate(
+      _id,
+      req.body,
+      {
+        new: true,
+        runValidators: true,
+      }
+    );
+
+    if (!updatedVideo) {
+      return res.status(404).json({
+        message: "Video not found",
+      });
+    }
+
+    res.status(200).json({
+      message: "Video updated successfully",
+      video: updatedVideo,
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
+export const deleteVideo = async (req, res) => {
+  try {
+    const { id } = req.params;
+    console.log(id);
+
+    const deletedVideo = await Video.findByIdAndDelete(id);
+
+    if (!deletedVideo) {
+      return res.status(404).json({
+        message: "Video not found",
+      });
+    }
+
+    res.status(200).json({
+      message: "Video deleted successfully",
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
     });
   }
 };

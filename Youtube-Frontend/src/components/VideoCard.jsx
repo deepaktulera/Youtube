@@ -3,33 +3,26 @@ import { Link } from "react-router-dom";
 
 const VideoCard = ({ video }) => {
   return (
-    <Link to={`/watch/${video.id}`} className="block w-full p-2">
-      {/* Thumbnail */}
+    <Link to={`/watch/${video._id}`} className="w-full p-2 rounded-2xl">
       <div className="overflow-hidden rounded-2xl group">
         <img
-          src={video.thumbnail}
+          src={video.thumbnailUrl}
           alt={video.title}
-          loading="lazy"
-          className="w-full h-64 object-cover rounded-2xl transition-transform duration-500 group-hover:scale-105"
+          className="w-full h-70 object-cover rounded-2xl transition-transform duration-700 group-hover:scale-105"
         />
       </div>
 
-      {/* Video Details */}
       <div className="flex gap-3 mt-3">
-        {/* Channel Logo */}
-        <img
-          src={video.channelLogo}
-          alt={video.channel}
-          className="w-10 h-10 rounded-full object-cover"
-        />
+        <div className="w-10 h-10 rounded-full bg-red-600 text-white flex items-center justify-center font-bold">
+          {video.channel.charAt(0).toUpperCase()}
+        </div>
 
-        {/* Text */}
         <div>
-          <h2 className="font-semibold text-sm line-clamp-2">{video.title}</h2>
+          <h2 className="font-semibold line-clamp-2">{video.title}</h2>
 
-          <p className="text-sm text-gray-600 mt-1">{video.channel}</p>
+          <p className="text-sm text-gray-600">{video.channel}</p>
 
-          <p className="text-xs text-gray-500">{video.views}</p>
+          <p className="text-xs text-gray-500">{video.views} views</p>
         </div>
       </div>
     </Link>

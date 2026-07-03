@@ -1,5 +1,6 @@
-import React from "react";
-import video from "../video/video.mp4";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import { useParams } from "react-router-dom";
 import {
   Forward,
   ArrowDownToLine,
@@ -9,6 +10,28 @@ import {
 } from "lucide-react";
 
 const VideoPlayer = () => {
+  const { id } = useParams();
+
+  const [video, setVideo] = useState(null);
+
+  useEffect(() => {
+    fetchVideo();
+  }, []);
+
+  async function fetchVideo() {
+    try {
+      const res = await axios.get(
+        `${import.meta.env.VITE_API_URL}/video/${id}`,
+      );
+
+      console.log(res.data);
+      
+      setVideo(res.data);
+    } catch (error) {
+      console.log(error.response?.data || error.message);
+    }
+  }
+
   return (
     <div className="min-h-screen bg-white">
       <section className="grid grid-cols-1 lg:grid-cols-[5fr_2fr] gap-6 px-1 lg:px-13">
