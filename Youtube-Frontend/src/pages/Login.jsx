@@ -33,9 +33,10 @@ const Login = () => {
         password: formData.password,
       });
 
-      const { token, username, name } = res.data;
+      const { token, username, name , id} = res.data;
 
       localStorage.setItem("token", token);
+      localStorage.setItem("id", id);
       localStorage.setItem("username", username);
       localStorage.setItem("name", name);
 

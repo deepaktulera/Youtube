@@ -8,7 +8,7 @@ import {
 
 const router = express.Router();
 
-router.get("/channel/:id", showChannel);
+router.get("/channel/:username", showChannel);
 router.post("/channel", createChannel);
 router.patch("/channel/:id", updateChannel);
 router.delete("/channel/:id", deleteChannel);

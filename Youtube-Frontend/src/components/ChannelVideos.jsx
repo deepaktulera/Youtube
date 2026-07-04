@@ -10,15 +10,11 @@ const ChannelVideos = ({ uploader }) => {
   useEffect(() => {
     fetchVideos();
   }, [uploader]);
-  console.log(uploader);
-  
-  
+
 
   const fetchVideos = async () => {
     try {
       const res = await getChannelVideos(uploader);
-      console.log(res);
-      
       setVideos(res.data);
     } catch (error) {
       console.log(error.response?.data || error.message);

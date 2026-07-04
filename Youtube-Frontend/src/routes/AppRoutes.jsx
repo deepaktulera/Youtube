@@ -1,10 +1,8 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
-
 import HomeLayout from "../layouts/HomeLayout";
 import WatchLayout from "../layouts/WatchLayout";
 import ChannelLayout from "../layouts/ChannelLayout";
-
 import Home from "../pages/Home";
 import Shorts from "../pages/Shorts";
 import Login from "../pages/Login";
@@ -35,14 +33,11 @@ const AppRoutes = () => {
 
       {/* Channel */}
       <Route element={<ChannelLayout />}>
-        <Route path="/channel/:id" element={<Channel />} />
+        <Route path="/channel/:username" element={<Channel />} />
       </Route>
 
       {/* 404 Page */}
-      <Route
-        path="*"
-        element={<NotFound />}
-      />
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 };

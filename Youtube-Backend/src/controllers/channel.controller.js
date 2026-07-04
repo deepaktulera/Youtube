@@ -2,14 +2,15 @@ import Channel from "../models/Channel.js";
 
 export const createChannel = async (req, res) => {
   try {
-    const { channelname, channeldescription, avatar, channelbanner , owner} = req.body;
+    const { channelname, channeldescription, avatar, channelbanner, owner } =
+      req.body;
 
     const newChannel = await Channel.create({
       channelname,
       channeldescription,
       avatar,
       channelbanner,
-      owner
+      owner,
     });
 
     res.status(201).json(newChannel);
@@ -20,9 +21,9 @@ export const createChannel = async (req, res) => {
 
 export const showChannel = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { username } = req.params;
 
-    const channel = await Channel.findById(id);
+    const channel = await Channel.findOne({ username });
 
     if (!channel) {
       return res.status(404).json({ message: "Channel doesn't exist" });
@@ -44,12 +45,15 @@ export const updateChannel = async (req, res) => {
       return res.status(404).json({ message: "Channel doesn't exist" });
     }
 
-    const { channelname, channeldescription, avatar, channelBanner } = req.body;
+    const { channelname, username, channeldescription, avatar, channelbanner } =
+      req.body;
 
-    channel.channelname = channelname;
-    channel.channeldescription = channeldescription;
-    channel.avatar = avatar;
-    channel.channelBanner = channelBanner;
+    if (channelname !== undefined) channel.channelname = channelname;
+    if (username !== undefined) channel.username = username;
+    if (channeldescription !== undefined)
+      channel.channeldescription = channeldescription;
+    if (avatar !== undefined) channel.avatar = avatar;
+    if (channelbanner !== undefined) channel.channelbanner = channelbanner;
 
     await channel.save();
 
