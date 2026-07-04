@@ -33,7 +33,6 @@ export const fetchVideo = async (req, res) => {
 };
 
 export const uploadVideo = async (req, res) => {
-
   try {
     const {
       title,
@@ -70,14 +69,10 @@ export const updateVideo = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const updatedVideo = await Video.findByIdAndUpdate(
-      _id,
-      req.body,
-      {
-        new: true,
-        runValidators: true,
-      }
-    );
+    const updatedVideo = await Video.findByIdAndUpdate(id, req.body, {
+      new: true,
+      runValidators: true,
+    });
 
     if (!updatedVideo) {
       return res.status(404).json({
@@ -89,7 +84,6 @@ export const updateVideo = async (req, res) => {
       message: "Video updated successfully",
       video: updatedVideo,
     });
-
   } catch (error) {
     res.status(500).json({
       message: error.message,
@@ -102,7 +96,7 @@ export const getChannelVideos = async (req, res) => {
     const { uploader } = req.params;
 
     const videos = await Video.find({ uploader });
-    
+
     res.status(200).json(videos);
   } catch (error) {
     res.status(500).json({
@@ -127,7 +121,6 @@ export const deleteVideo = async (req, res) => {
     res.status(200).json({
       message: "Video deleted successfully",
     });
-
   } catch (error) {
     res.status(500).json({
       message: error.message,

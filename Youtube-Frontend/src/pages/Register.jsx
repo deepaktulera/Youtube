@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Logo from "/YouTube-Logo.svg";
-import { useNavigate } from "react-router-dom";
 import { registerUser } from "../services/authService";
 
 const Register = () => {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     name: "",
     username: "",
@@ -13,18 +14,15 @@ const Register = () => {
     confirmPassword: "",
   });
 
-  // Handle input changes
-  const handleChange = (e) => {
-    const { name, value } = e.target;
+  const handleChange = ({ target }) => {
+    const { name, value } = target;
 
     setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
   };
-  const navigate = useNavigate();
 
-  // Handle form submit
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -34,14 +32,14 @@ const Register = () => {
     }
 
     try {
-      const res = await registerUser({
+      const response = await registerUser({
         name: formData.name,
         username: formData.username,
         email: formData.email,
         password: formData.password,
       });
 
-      alert(res.data.message || "Registration Successful!");
+      alert(response.data.message || "Registration Successful!");
 
       setFormData({
         name: "",
@@ -59,8 +57,8 @@ const Register = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
-      <div className="bg-white w-full max-w-md rounded-xl shadow-lg p-8">
-        <div className="flex justify-center mb-6">
+      <div className="w-full max-w-md rounded-xl bg-white p-8 shadow-lg">
+        <div className="mb-6 flex justify-center">
           <img
             src={Logo}
             alt="VideoTube"
@@ -68,9 +66,11 @@ const Register = () => {
           />
         </div>
 
-        <h2 className="text-2xl font-semibold text-center">Create Account</h2>
+        <h2 className="text-center text-2xl font-semibold">
+          Create Account
+        </h2>
 
-        <p className="text-gray-500 text-center mt-2 mb-6">
+        <p className="mt-2 mb-6 text-center text-gray-500">
           Join and start watching your favourite videos.
         </p>
 
@@ -81,8 +81,8 @@ const Register = () => {
             placeholder="Full Name"
             value={formData.name}
             onChange={handleChange}
+            className="w-full rounded-lg border p-2 focus:outline-none focus:ring-2 focus:ring-red-500"
             required
-            className="w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-red-500"
           />
 
           <input
@@ -91,8 +91,8 @@ const Register = () => {
             placeholder="Username"
             value={formData.username}
             onChange={handleChange}
+            className="w-full rounded-lg border p-2 focus:outline-none focus:ring-2 focus:ring-red-500"
             required
-            className="w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-red-500"
           />
 
           <input
@@ -101,8 +101,8 @@ const Register = () => {
             placeholder="Email"
             value={formData.email}
             onChange={handleChange}
+            className="w-full rounded-lg border p-2 focus:outline-none focus:ring-2 focus:ring-red-500"
             required
-            className="w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-red-500"
           />
 
           <input
@@ -111,8 +111,8 @@ const Register = () => {
             placeholder="Password"
             value={formData.password}
             onChange={handleChange}
+            className="w-full rounded-lg border p-2 focus:outline-none focus:ring-2 focus:ring-red-500"
             required
-            className="w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-red-500"
           />
 
           <input
@@ -121,23 +121,23 @@ const Register = () => {
             placeholder="Confirm Password"
             value={formData.confirmPassword}
             onChange={handleChange}
+            className="w-full rounded-lg border p-2 focus:outline-none focus:ring-2 focus:ring-red-500"
             required
-            className="w-full border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-red-500"
           />
 
           <button
             type="submit"
-            className="w-full bg-red-600 text-white py-3 rounded-lg hover:bg-red-700 transition"
+            className="w-full rounded-lg bg-red-600 py-3 text-white transition hover:bg-red-700"
           >
             Register
           </button>
         </form>
 
-        <p className="text-center text-gray-600 mt-6">
+        <p className="mt-6 text-center text-gray-600">
           Already have an account?
           <Link
             to="/login"
-            className="text-red-600 ml-2 font-semibold hover:underline"
+            className="ml-2 font-semibold text-red-600 hover:underline"
           >
             Login
           </Link>

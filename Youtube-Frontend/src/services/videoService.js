@@ -8,10 +8,10 @@ export const getChannelVideos = (uploader) =>
   api.get(`/videos/channel/${uploader}`);
 
 export const uploadVideo = (data) =>
-    api.post("/upload", data);
+  api.post("/video/upload", data);
 
 export const deleteVideo = (id) =>
-    api.delete(`/video/${id}`);
+  api.delete(`/video/${id}`);
 
-export const updateVideo = (id,data)=>
-    api.put(`/video/${id}`,data);
+export const updateVideo = (id, data) =>
+  api.patch(`/video/${id}`, data);

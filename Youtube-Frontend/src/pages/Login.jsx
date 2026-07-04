@@ -6,15 +6,15 @@ import { loginUser } from "../services/authService";
 const Login = () => {
   const navigate = useNavigate();
 
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
+  const handleChange = ({ target }) => {
+    const { name, value } = target;
 
     setFormData((prev) => ({
       ...prev,
@@ -25,15 +25,12 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    setLoading(true);
+    setIsLoading(true);
 
     try {
-      const res = await loginUser({
-        email: formData.email,
-        password: formData.password,
-      });
+      const response = await loginUser(formData);
 
-      const { token, username, name , id} = res.data;
+      const { token, id, username, name } = response.data;
 
       localStorage.setItem("token", token);
       localStorage.setItem("id", id);
@@ -49,20 +46,22 @@ const Login = () => {
     } catch (error) {
       alert(error.response?.data?.message || "Something went wrong");
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
-      <div className="bg-white w-full max-w-md rounded-xl shadow-lg p-8">
-        <div className="flex justify-center mb-6">
+      <div className="w-full max-w-md rounded-xl bg-white p-8 shadow-lg">
+        <div className="mb-6 flex justify-center">
           <img src={Logo} alt="YouTube" className="h-25" />
         </div>
 
-        <h2 className="text-3xl font-semibold text-center">Sign In</h2>
+        <h2 className="text-center text-3xl font-semibold">
+          Sign In
+        </h2>
 
-        <p className="text-gray-500 text-center mt-2 mb-6">
+        <p className="mt-2 mb-6 text-center text-gray-500">
           Welcome back! Please login to your account.
         </p>
 
@@ -73,8 +72,8 @@ const Login = () => {
             placeholder="Email"
             value={formData.email}
             onChange={handleChange}
+            className="w-full rounded-lg border p-3 focus:outline-none focus:ring-2 focus:ring-red-500"
             required
-            className="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-red-500"
           />
 
           <input
@@ -83,24 +82,24 @@ const Login = () => {
             placeholder="Password"
             value={formData.password}
             onChange={handleChange}
+            className="w-full rounded-lg border p-3 focus:outline-none focus:ring-2 focus:ring-red-500"
             required
-            className="w-full border rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-red-500"
           />
 
           <button
             type="submit"
-            disabled={loading}
-            className="w-full bg-red-600 text-white py-3 rounded-lg hover:bg-red-700 transition disabled:bg-red-400 disabled:cursor-not-allowed"
+            disabled={isLoading}
+            className="w-full rounded-lg bg-red-600 py-3 text-white transition hover:bg-red-700 disabled:cursor-not-allowed disabled:bg-red-400"
           >
-            {loading ? "Logging in..." : "Login"}
+            {isLoading ? "Logging in..." : "Login"}
           </button>
         </form>
 
-        <p className="text-center text-gray-600 mt-6">
+        <p className="mt-6 text-center text-gray-600">
           Don't have an account?
           <Link
             to="/register"
-            className="text-red-600 ml-2 font-semibold hover:underline"
+            className="ml-2 font-semibold text-red-600 hover:underline"
           >
             Register
           </Link>

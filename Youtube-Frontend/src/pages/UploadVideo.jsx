@@ -1,20 +1,21 @@
 import React, { useState } from "react";
-import axios from "axios";
+import { uploadVideo } from "../services/videoService";
+
+const data = {
+  title: "",
+  description: "",
+  thumbnailUrl: "",
+  videoUrl: "",
+  category: "",
+  uploader: localStorage.getItem("username") || "",
+  channel: localStorage.getItem("name") || "",
+};
 
 const UploadVideo = () => {
-  const [formData, setFormData] = useState({
-    title: "",
-    description: "",
-    thumbnailUrl: "",
-    videoUrl: "",
-    category: "",
-    uploader: localStorage.getItem("username") || "",
-    channel: localStorage.getItem("name") || "",
-  });
+  const [formData, setFormData] = useState(data);
 
-  // Handle Input Change
-  const handleChange = (e) => {
-    const { name, value } = e.target;
+  const handleChange = ({ target }) => {
+    const { name, value } = target;
 
     setFormData((prev) => ({
       ...prev,
@@ -22,28 +23,15 @@ const UploadVideo = () => {
     }));
   };
 
-  // Handle Form Submit
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      const res = await axios.post(
-        `${import.meta.env.VITE_API_URL}/video/upload`,
-        formData
-      );
+      const response = await uploadVideo(formData);
 
-      alert(res.data.message);
+      alert(response.data.message);
 
-      // Reset form (keep uploader & channel)
-      setFormData({
-        title: "",
-        description: "",
-        thumbnailUrl: "",
-        videoUrl: "",
-        category: "",
-        uploader: localStorage.getItem("username") || "",
-        channel: localStorage.getItem("name") || "",
-      });
+      setFormData(data);
     } catch (error) {
       console.log(error.response?.data || error.message);
       alert(error.response?.data?.message || "Something went wrong");
@@ -51,14 +39,12 @@ const UploadVideo = () => {
   };
 
   return (
-    <div className="w-full min-h-screen flex justify-center items-center p-5 bg-gray-100">
+    <div className="w-full min-h-screen flex items-center justify-center bg-gray-100 p-5">
       <form
         onSubmit={handleSubmit}
-        className="w-full max-w-2xl bg-white shadow-md rounded-2xl p-6 flex flex-col gap-4"
+        className="flex w-full max-w-2xl flex-col gap-4 rounded-2xl bg-white p-6 shadow-md"
       >
-        <h1 className="text-3xl font-bold text-center">
-          Upload Video
-        </h1>
+        <h1 className="text-center text-3xl font-bold">Upload Video</h1>
 
         <input
           type="text"
@@ -66,7 +52,7 @@ const UploadVideo = () => {
           placeholder="Video Title"
           value={formData.title}
           onChange={handleChange}
-          className="border rounded-xl p-3 outline-none focus:ring-2 focus:ring-blue-500"
+          className="rounded-xl border p-3 outline-none focus:ring-2 focus:ring-blue-500"
           required
         />
 
@@ -75,7 +61,8 @@ const UploadVideo = () => {
           placeholder="Video Description"
           value={formData.description}
           onChange={handleChange}
-          className="border rounded-xl p-3 h-32 resize-none outline-none focus:ring-2 focus:ring-blue-500"
+          rows={5}
+          className="resize-none rounded-xl border p-3 outline-none focus:ring-2 focus:ring-blue-500"
           required
         />
 
@@ -85,7 +72,7 @@ const UploadVideo = () => {
           placeholder="Thumbnail URL"
           value={formData.thumbnailUrl}
           onChange={handleChange}
-          className="border rounded-xl p-3 outline-none focus:ring-2 focus:ring-blue-500"
+          className="rounded-xl border p-3 outline-none focus:ring-2 focus:ring-blue-500"
           required
         />
 
@@ -95,7 +82,7 @@ const UploadVideo = () => {
           placeholder="Video URL"
           value={formData.videoUrl}
           onChange={handleChange}
-          className="border rounded-xl p-3 outline-none focus:ring-2 focus:ring-blue-500"
+          className="rounded-xl border p-3 outline-none focus:ring-2 focus:ring-blue-500"
           required
         />
 
@@ -103,7 +90,7 @@ const UploadVideo = () => {
           name="category"
           value={formData.category}
           onChange={handleChange}
-          className="border rounded-xl p-3 outline-none focus:ring-2 focus:ring-blue-500"
+          className="rounded-xl border p-3 outline-none focus:ring-2 focus:ring-blue-500"
           required
         >
           <option value="">Select Category</option>
@@ -118,7 +105,7 @@ const UploadVideo = () => {
 
         <button
           type="submit"
-          className="bg-blue-600 text-white py-3 rounded-xl hover:bg-blue-700 transition"
+          className="rounded-xl bg-blue-600 py-3 text-white transition hover:bg-blue-700"
         >
           Upload Video
         </button>

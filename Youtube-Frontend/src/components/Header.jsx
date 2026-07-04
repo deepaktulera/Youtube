@@ -1,10 +1,20 @@
 import React, { useState } from "react";
-import { Search, Menu, Bell, Plus, User, ArrowLeft } from "lucide-react";
-import { Link} from "react-router-dom";
+import {
+  Search,
+  Menu,
+  Bell,
+  Plus,
+  User,
+  ArrowLeft,
+} from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
+import { getChannel } from "../services/channelService";
 
 const Header = ({ toggleSidebar }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [showMobileSearch, setShowMobileSearch] = useState(false);
+
+  const navigate = useNavigate();
 
   const token = localStorage.getItem("token");
   const username = localStorage.getItem("username");
@@ -15,9 +25,31 @@ const Header = ({ toggleSidebar }) => {
     setIsOpen(!isOpen);
   }
 
+  const handleCreate = async () => {
+    // User not logged in
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+
+    try {
+      // Check if channel exists
+      await getChannel(username);
+
+      // Channel exists
+      navigate("/upload");
+    } catch (error) {
+      if (error.response?.status === 404) {
+        // Channel doesn't exist
+        navigate(`/create-channel/${username}`);
+      } else {
+        console.log(error);
+      }
+    }
+  };
+
   return (
     <nav className="flex bg-white w-full items-center justify-between fixed top-0 h-14 px-3 sm:px-5 z-50">
-      {/* Mobile Search */}
       {showMobileSearch ? (
         <div className="flex items-center w-full md:hidden gap-2">
           <button
@@ -40,7 +72,7 @@ const Header = ({ toggleSidebar }) => {
         </div>
       ) : (
         <>
-          {/* Left section */}
+          {/* Left */}
           <section className="flex items-center gap-2 sm:gap-4">
             <button onClick={toggleSidebar} className="cursor-pointer">
               <Menu />
@@ -55,7 +87,7 @@ const Header = ({ toggleSidebar }) => {
             </Link>
           </section>
 
-          {/* Desktop Search */}
+          {/* Search */}
           <section className="hidden md:flex items-center">
             <input
               type="text"
@@ -63,14 +95,13 @@ const Header = ({ toggleSidebar }) => {
               className="w-64 lg:w-md p-2 border border-gray-300 rounded-l-full px-5 outline-none"
             />
 
-            <button className="px-5 py-2 border border-l-0 border-gray-300 rounded-r-full bg-gray-50 hover:bg-gray-100 cursor-pointer">
+            <button className="px-5 py-2 border border-l-0 border-gray-300 rounded-r-full bg-gray-50 hover:bg-gray-100">
               <Search />
             </button>
           </section>
 
-          {/* Right section */}
+          {/* Right */}
           <section className="flex items-center gap-2">
-            {/* Mobile Search */}
             <button
               onClick={() => setShowMobileSearch(true)}
               className="md:hidden p-2 hover:bg-gray-100 rounded-full"
@@ -78,16 +109,16 @@ const Header = ({ toggleSidebar }) => {
               <Search size={22} />
             </button>
 
-            {/* Create */}
-            <Link
-              to="/upload"
-              className="flex items-center gap-1 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-full"
+            {/* Create Button */}
+            <button
+              onClick={handleCreate}
+              className="flex items-center gap-1 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-full cursor-pointer"
             >
               <Plus strokeWidth={1.5} size={20} />
               <span className="hidden md:block">Create</span>
-            </Link>
+            </button>
 
-            {/* Notifications */}
+            {/* Notification */}
             <button className="p-2 hover:bg-gray-100 rounded-full cursor-pointer">
               <Bell size={22} />
             </button>
@@ -101,8 +132,8 @@ const Header = ({ toggleSidebar }) => {
                 {firstLetter}
 
                 {isOpen && (
-                  <div className="absolute top-10 right-0 w-40 bg-white text-black rounded-xl shadow-2xl py-2 z-50">
-                    <div className="px-4 py-2 hover:bg-gray-100">
+                  <div className="absolute top-10 right-0 w-44 bg-white text-black rounded-xl shadow-lg py-2 z-50">
+                    <div className="px-4 py-2">
                       <p className="font-semibold">{username}</p>
                     </div>
 
@@ -118,7 +149,9 @@ const Header = ({ toggleSidebar }) => {
                         localStorage.removeItem("token");
                         localStorage.removeItem("username");
                         localStorage.removeItem("name");
-                        window.location.href = "/";
+
+                        navigate("/");
+                        window.location.reload();
                       }}
                       className="w-full text-left px-4 py-2 hover:bg-gray-100 text-red-600"
                     >
