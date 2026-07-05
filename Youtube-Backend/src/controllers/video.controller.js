@@ -1,4 +1,5 @@
 import Video from "../models/Video.js";
+import Channel from "../models/Channel.js";
 
 export const fetchVideos = async (req, res) => {
   try {
@@ -34,15 +35,17 @@ export const fetchVideo = async (req, res) => {
 
 export const uploadVideo = async (req, res) => {
   try {
-    const {
-      title,
-      description,
-      thumbnailUrl,
-      videoUrl,
-      category,
-      uploader,
-      channel,
-    } = req.body;
+    const { title, description, thumbnailUrl, videoUrl, category, uploader } =
+      req.body;
+
+    // Find uploader's channel
+    const channel = await Channel.findOne({ username: uploader });
+
+    if (!channel) {
+      return res.status(404).json({
+        message: "Channel not found. Please create a channel first.",
+      });
+    }
 
     const newVideo = await Video.create({
       title,
@@ -51,7 +54,7 @@ export const uploadVideo = async (req, res) => {
       videoUrl,
       category,
       uploader,
-      channel,
+      channel: channel.channelname, // Automatically use actual channel name
     });
 
     res.status(201).json({

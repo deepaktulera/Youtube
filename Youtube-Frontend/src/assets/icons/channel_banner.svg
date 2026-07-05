@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 240" preserveAspectRatio="xMidYMid slice">
+  <!-- Background -->
+  <rect width="1200" height="240" rx="20" fill="#f5f5f5"/>
+
+  <!-- Sun -->
+  <circle cx="600" cy="60" r="28" fill="#d9d9d9"/>
+
+  <!-- Back Mountain -->
+  <path
+    d="M0 240 L300 110 L600 240 Z"
+    fill="#e5e5e5"
+  />
+
+  <!-- Left Mountain -->
+  <path
+    d="M0 240 L280 80 L640 240 Z"
+    fill="#d1d5db"
+  />
+
+  <!-- Right Mountain -->
+  <path
+    d="M520 240 L900 90 L1200 240 Z"
+    fill="#dcdcdc"
+  />
+</svg>

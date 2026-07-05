@@ -35,23 +35,31 @@ const Sidebar = ({ isSidebarOpen }) => {
 
   return (
     <aside
-      className={`fixed top-14 left-0 h-[calc(100vh-56px)] bg-white z-40 overflow-hidden transition-all duration-300 ${
-        isSidebarOpen ? "w-52" : "w-0 lg:w-16"
-      }`}
+      className={
+        isSidebarOpen
+          ? "fixed top-14 left-0 bottom-0 w-52 bg-white z-40 overflow-hidden transition-all duration-300"
+          : "fixed top-14 left-0 top-14 bottom-0 w-0 lg:w-16 bg-white z-40 overflow-hidden transition-all duration-300"
+      }
     >
       {menuItems.map((item) => (
         <NavLink
           key={item.name}
           to={item.path}
-          className={({ isActive }) =>
-            `${
-              isSidebarOpen
-                ? "flex items-center gap-4 px-4 py-3"
-                : "flex flex-col items-center justify-center py-4"
-            } mx-2 rounded-xl hover:bg-gray-100 ${
-              isActive ? "bg-gray-200 font-semibold" : ""
-            }`
-          }
+          className={({ isActive }) => {
+            let classes = "mx-2 rounded-xl hover:bg-gray-100 ";
+
+            if (isSidebarOpen) {
+              classes += "flex items-center gap-4 px-4 py-3 ";
+            } else {
+              classes += "flex flex-col items-center justify-center py-4 ";
+            }
+
+            if (isActive) {
+              classes += "bg-gray-200 font-semibold";
+            }
+
+            return classes;
+          }}
         >
           <img
             src={item.icon}
@@ -59,9 +67,7 @@ const Sidebar = ({ isSidebarOpen }) => {
             className="w-6 h-6 object-contain"
           />
 
-          {isSidebarOpen && (
-            <span className="text-sm whitespace-nowrap">{item.name}</span>
-          )}
+          {isSidebarOpen && <span className="text-sm">{item.name}</span>}
         </NavLink>
       ))}
     </aside>

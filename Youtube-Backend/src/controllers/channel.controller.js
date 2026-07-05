@@ -52,9 +52,9 @@ export const showChannel = async (req, res) => {
 
 export const updateChannel = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { username } = req.params;
 
-    const channel = await Channel.findById(id);
+    const channel = await Channel.findOne({ username });
 
     if (!channel) {
       return res.status(404).json({
@@ -62,19 +62,19 @@ export const updateChannel = async (req, res) => {
       });
     }
 
-    const { channelname, username, channeldescription, avatar, channelbanner } =
-      req.body;
+    // Only owner can edit
+    if (channel.owner.toString() !== req.user.id) {
+      return res.status(403).json({
+        message: "Unauthorized",
+      });
+    }
 
-    if (channelname !== undefined) channel.channelname = channelname;
+    const { channelname, channeldescription, avatar, channelbanner } = req.body;
 
-    if (username !== undefined) channel.username = username;
-
-    if (channeldescription !== undefined)
-      channel.channeldescription = channeldescription;
-
-    if (avatar !== undefined) channel.avatar = avatar;
-
-    if (channelbanner !== undefined) channel.channelbanner = channelbanner;
+    channel.channelname = channelname;
+    channel.channeldescription = channeldescription;
+    channel.avatar = avatar;
+    channel.channelbanner = channelbanner;
 
     await channel.save();
 
@@ -83,6 +83,8 @@ export const updateChannel = async (req, res) => {
       channel,
     });
   } catch (error) {
+    console.log(error);
+
     res.status(500).json({
       message: error.message,
     });

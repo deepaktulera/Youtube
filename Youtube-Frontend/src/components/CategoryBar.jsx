@@ -1,37 +1,35 @@
-import React, { useState } from "react";
+import React from "react";
 
 const categories = [
   "All",
   "Music",
   "Gaming",
-  "Live",
   "News",
   "Sports",
-  "Podcasts",
-  "Movies",
+  "Education",
+  "Programming",
+  "Entertainment",
 ];
 
-const CategoryBar = () => {
-  const [activeCategory, setActiveCategory] = useState("All");
-
+const CategoryBar = ({ category, setCategory }) => {
   return (
     <div className="fixed top-14 left-0 right-0 z-40 bg-white flex justify-center">
       <div className="flex items-center gap-3 overflow-x-auto whitespace-nowrap px-4 py-3 scrollbar-hide">
-        {categories.map((category) => {
-          const isActive = activeCategory === category;
+        {categories.map((item) => {
+          const isActive = item === category;
 
           return (
             <button
-              key={category}
+              key={item}
               type="button"
-              onClick={() => setActiveCategory(category)}
+              onClick={() => setCategory(item)}
               className={`px-4 py-2 rounded-lg text-sm font-medium transition ${
                 isActive
                   ? "bg-black text-white"
                   : "bg-gray-100 hover:bg-gray-200"
               }`}
             >
-              {category}
+              {item}
             </button>
           );
         })}

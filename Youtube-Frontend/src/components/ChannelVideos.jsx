@@ -12,12 +12,16 @@ const ChannelVideos = ({ uploader }) => {
   }, [uploader]);
 
 
+  // Here We fetch videoes by calling api
   const fetchVideos = async () => {
+    // if we get responce so set that responce in setvideo
     try {
       const res = await getChannelVideos(uploader);
       setVideos(res.data);
+      // if error occures so sent the error message
     } catch (error) {
       console.log(error.response?.data || error.message);
+      // finialise the code is completed
     } finally {
       setLoading(false);
     }
@@ -39,6 +43,7 @@ const ChannelVideos = ({ uploader }) => {
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+      
       {videos.map((video) => (
         <VideoCard key={video._id} video={video} />
       ))}

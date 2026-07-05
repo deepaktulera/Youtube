@@ -12,6 +12,7 @@ import Channel from "../pages/Channel";
 import UploadVideo from "../pages/UploadVideo";
 import NotFound from "../pages/NotFound";
 import CreateChannel from "../pages/CreateChannel";
+import EditChannel from "../pages/EditChannel";
 
 const AppRoutes = () => {
   return (
@@ -36,6 +37,7 @@ const AppRoutes = () => {
       <Route element={<ChannelLayout />}>
         <Route path="/channel/:username" element={<Channel />} />
         <Route path="/create-channel/:username" element={<CreateChannel />} />
+        <Route path="/edit-channel/:username" element={<EditChannel />} />
       </Route>
 
       {/* 404 Page */}

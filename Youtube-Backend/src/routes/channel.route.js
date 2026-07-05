@@ -13,8 +13,10 @@ router.get("/channel/:username", showChannel);
 
 router.post("/channel/:username", verifyToken, createChannel);
 
-router.patch("/channel/:id", verifyToken, updateChannel);
+// UPDATE CHANNEL
+router.patch("/channel/:username", verifyToken, updateChannel);
 
+// DELETE CHANNEL
 router.delete("/channel/:id", verifyToken, deleteChannel);
 
 export default router;

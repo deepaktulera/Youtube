@@ -8,7 +8,6 @@ const data = {
   videoUrl: "",
   category: "",
   uploader: localStorage.getItem("username") || "",
-  channel: localStorage.getItem("name") || "",
 };
 
 const UploadVideo = () => {

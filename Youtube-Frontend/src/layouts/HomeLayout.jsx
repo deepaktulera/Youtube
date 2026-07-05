@@ -18,7 +18,7 @@ const HomeLayout = () => {
 
       <main
         className={`pt-14 transition-all duration-300 ${
-          isSidebarOpen ? "md:pl-52" : "md:pl-16"
+          isSidebarOpen ? "md:pl-52" : "lg:pl-15"
         }`}
       >
         <Outlet />
