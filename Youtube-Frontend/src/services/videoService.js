@@ -7,11 +7,12 @@ export const getVideo = (id) => api.get(`/video/${id}`);
 export const getChannelVideos = (uploader) =>
   api.get(`/videos/channel/${uploader}`);
 
-export const uploadVideo = (data) =>
-  api.post("/video/upload", data);
+export const likeVideo = (id) => api.put(`/video/${id}/like`);
 
-export const deleteVideo = (id) =>
-  api.delete(`/video/${id}`);
+export const dislikeVideo = (id) => api.put(`/video/${id}/dislike`);
 
-export const updateVideo = (id, data) =>
-  api.patch(`/video/${id}`, data);
+export const uploadVideo = (data) => api.post("/video/upload", data);
+
+export const deleteVideo = (id) => api.delete(`/video/${id}`);
+
+export const updateVideo = (id, data) => api.patch(`/video/${id}`, data);

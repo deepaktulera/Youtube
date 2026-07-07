@@ -1,6 +1,9 @@
+import React from "react";
 import ShortCard from "../components/ShortCard";
 
+// Shorts page that displays all short videos
 function Shorts() {
+  // Static list of shorts
   const shorts = [
     {
       id: 1,
@@ -12,6 +15,7 @@ function Shorts() {
 
   return (
     <div className="h-screen overflow-y-scroll">
+      {/* Render all available shorts */}
       {shorts.map((short) => (
         <ShortCard key={short.id} short={short} />
       ))}

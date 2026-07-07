@@ -3,9 +3,11 @@ import { Link, useNavigate } from "react-router-dom";
 import Logo from "/YouTube-Logo.svg";
 import { registerUser } from "../services/authService";
 
+// Registration page for creating a new account
 const Register = () => {
   const navigate = useNavigate();
 
+  // Store all registration form data
   const [formData, setFormData] = useState({
     name: "",
     username: "",
@@ -14,6 +16,7 @@ const Register = () => {
     confirmPassword: "",
   });
 
+  // Update form values when the user types
   const handleChange = ({ target }) => {
     const { name, value } = target;
 
@@ -23,15 +26,19 @@ const Register = () => {
     }));
   };
 
+  // Handle registration form submission
   const handleSubmit = async (e) => {
+    // Prevent page refresh
     e.preventDefault();
 
+    // Validate password confirmation
     if (formData.password !== formData.confirmPassword) {
       alert("Passwords do not match");
       return;
     }
 
     try {
+      // Register the user
       const response = await registerUser({
         name: formData.name,
         username: formData.username,
@@ -39,8 +46,10 @@ const Register = () => {
         password: formData.password,
       });
 
+      // Show success message
       alert(response.data.message || "Registration Successful!");
 
+      // Clear the form
       setFormData({
         name: "",
         username: "",
@@ -49,15 +58,19 @@ const Register = () => {
         confirmPassword: "",
       });
 
+      // Redirect to login page
       navigate("/login");
     } catch (error) {
+      // Display error message
       alert(error.response?.data?.message || "Something went wrong");
     }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
+      {/* Registration Card */}
       <div className="w-full max-w-md rounded-xl bg-white p-8 shadow-lg">
+        {/* Application Logo */}
         <div className="mb-6 flex justify-center">
           <img
             src={Logo}
@@ -66,15 +79,17 @@ const Register = () => {
           />
         </div>
 
-        <h2 className="text-center text-2xl font-semibold">
-          Create Account
-        </h2>
+        {/* Page Heading */}
+        <h2 className="text-center text-2xl font-semibold">Create Account</h2>
 
+        {/* Welcome Message */}
         <p className="mt-2 mb-6 text-center text-gray-500">
           Join and start watching your favourite videos.
         </p>
 
+        {/* Registration Form */}
         <form onSubmit={handleSubmit} className="space-y-5">
+          {/* Full Name */}
           <input
             type="text"
             name="name"
@@ -85,6 +100,7 @@ const Register = () => {
             required
           />
 
+          {/* Username */}
           <input
             type="text"
             name="username"
@@ -95,6 +111,7 @@ const Register = () => {
             required
           />
 
+          {/* Email */}
           <input
             type="email"
             name="email"
@@ -105,6 +122,7 @@ const Register = () => {
             required
           />
 
+          {/* Password */}
           <input
             type="password"
             name="password"
@@ -115,6 +133,7 @@ const Register = () => {
             required
           />
 
+          {/* Confirm Password */}
           <input
             type="password"
             name="confirmPassword"
@@ -125,6 +144,7 @@ const Register = () => {
             required
           />
 
+          {/* Register Button */}
           <button
             type="submit"
             className="w-full rounded-lg bg-red-600 py-3 text-white transition hover:bg-red-700"
@@ -133,6 +153,7 @@ const Register = () => {
           </button>
         </form>
 
+        {/* Login Link */}
         <p className="mt-6 text-center text-gray-600">
           Already have an account?
           <Link

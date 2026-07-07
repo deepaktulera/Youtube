@@ -6,6 +6,8 @@ import {
   updateVideo,
   deleteVideo,
   getChannelVideos,
+  likeVideo,
+  dislikeVideo,
 } from "../controllers/video.controller.js";
 import { verifyToken } from "../middleware/verifyToken.js";
 
@@ -17,5 +19,7 @@ router.get("/video/:id", fetchVideo);
 router.get("/videos/channel/:uploader", getChannelVideos);
 router.patch("/video/:id",verifyToken ,  updateVideo);
 router.delete("/video/:id",verifyToken , deleteVideo);
+router.put("/video/:id/like", verifyToken, likeVideo);
+router.put("/video/:id/dislike", verifyToken, dislikeVideo);
 
 export default router;

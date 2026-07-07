@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { uploadVideo } from "../services/videoService";
 
+// Initial form values
 const data = {
   title: "",
   description: "",
@@ -10,9 +11,12 @@ const data = {
   uploader: localStorage.getItem("username") || "",
 };
 
+// Upload Video page
 const UploadVideo = () => {
+  // Store form data
   const [formData, setFormData] = useState(data);
 
+  // Update form values when user types
   const handleChange = ({ target }) => {
     const { name, value } = target;
 
@@ -22,29 +26,42 @@ const UploadVideo = () => {
     }));
   };
 
+  // Handle video upload
   const handleSubmit = async (e) => {
+    // Prevent page refresh
     e.preventDefault();
 
     try {
+      // Upload video data to the server
       const response = await uploadVideo(formData);
 
+      // Show success message
       alert(response.data.message);
 
+      // Reset form after successful upload
       setFormData(data);
     } catch (error) {
+      // Log error in console
       console.log(error.response?.data || error.message);
+
+      // Show error message
       alert(error.response?.data?.message || "Something went wrong");
     }
   };
 
   return (
     <div className="w-full min-h-screen flex items-center justify-center bg-gray-100 p-5">
+      {/* Upload Form */}
       <form
         onSubmit={handleSubmit}
         className="flex w-full max-w-2xl flex-col gap-4 rounded-2xl bg-white p-6 shadow-md"
       >
-        <h1 className="text-center text-3xl font-bold">Upload Video</h1>
+        {/* Page Heading */}
+        <h1 className="text-center text-3xl font-bold">
+          Upload Video
+        </h1>
 
+        {/* Video Title */}
         <input
           type="text"
           name="title"
@@ -55,6 +72,7 @@ const UploadVideo = () => {
           required
         />
 
+        {/* Video Description */}
         <textarea
           name="description"
           placeholder="Video Description"
@@ -65,6 +83,7 @@ const UploadVideo = () => {
           required
         />
 
+        {/* Thumbnail URL */}
         <input
           type="text"
           name="thumbnailUrl"
@@ -75,6 +94,7 @@ const UploadVideo = () => {
           required
         />
 
+        {/* Video URL */}
         <input
           type="text"
           name="videoUrl"
@@ -85,6 +105,7 @@ const UploadVideo = () => {
           required
         />
 
+        {/* Video Category */}
         <select
           name="category"
           value={formData.category}
@@ -102,6 +123,7 @@ const UploadVideo = () => {
           <option value="Entertainment">Entertainment</option>
         </select>
 
+        {/* Upload Button */}
         <button
           type="submit"
           className="rounded-xl bg-blue-600 py-3 text-white transition hover:bg-blue-700"

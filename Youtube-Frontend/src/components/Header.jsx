@@ -10,37 +10,45 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import { getChannel } from "../services/channelService";
 
+// Header component displayed at the top of every page
 const Header = ({ toggleSidebar }) => {
+  // Controls the user profile dropdown
   const [isOpen, setIsOpen] = useState(false);
+
+  // Controls the mobile search bar
   const [showMobileSearch, setShowMobileSearch] = useState(false);
 
   const navigate = useNavigate();
 
+  // Get user authentication details from local storage
   const token = localStorage.getItem("token");
   const username = localStorage.getItem("username");
 
+  // Get the first letter of the username for the profile avatar
   const firstLetter = username ? username.charAt(0).toUpperCase() : "";
 
+  // Toggle the user dropdown menu
   function handleUser() {
     setIsOpen(!isOpen);
   }
 
+  // Handle Create button click
   const handleCreate = async () => {
-    // User not logged in
+    // Redirect to login if user is not authenticated
     if (!token) {
       navigate("/login");
       return;
     }
 
     try {
-      // Check if channel exists
+      // Check whether the user already has a channel
       await getChannel(username);
 
-      // Channel exists
+      // Navigate to upload page if channel exists
       navigate("/upload");
     } catch (error) {
       if (error.response?.status === 404) {
-        // Channel doesn't exist
+        // Redirect to create channel page if channel doesn't exist
         navigate(`/create-channel/${username}`);
       } else {
         console.log(error);
@@ -51,6 +59,7 @@ const Header = ({ toggleSidebar }) => {
   return (
     <nav className="flex bg-white w-full items-center justify-between fixed top-0 h-14 px-3 sm:px-5 z-50">
       {showMobileSearch ? (
+        // Mobile Search Layout
         <div className="flex items-center w-full md:hidden gap-2">
           <button
             onClick={() => setShowMobileSearch(false)}
@@ -72,7 +81,7 @@ const Header = ({ toggleSidebar }) => {
         </div>
       ) : (
         <>
-          {/* Left */}
+          {/* Left Section */}
           <section className="flex items-center gap-2 sm:gap-4">
             <button onClick={toggleSidebar} className="cursor-pointer">
               <Menu />
@@ -87,7 +96,7 @@ const Header = ({ toggleSidebar }) => {
             </Link>
           </section>
 
-          {/* Search */}
+          {/* Desktop Search */}
           <section className="hidden md:flex items-center">
             <input
               type="text"
@@ -100,8 +109,9 @@ const Header = ({ toggleSidebar }) => {
             </button>
           </section>
 
-          {/* Right */}
+          {/* Right Section */}
           <section className="flex items-center gap-2">
+            {/* Mobile Search Button */}
             <button
               onClick={() => setShowMobileSearch(true)}
               className="md:hidden p-2 hover:bg-gray-100 rounded-full"
@@ -118,12 +128,12 @@ const Header = ({ toggleSidebar }) => {
               <span className="hidden md:block">Create</span>
             </button>
 
-            {/* Notification */}
+            {/* Notifications */}
             <button className="p-2 hover:bg-gray-100 rounded-full cursor-pointer">
               <Bell size={22} />
             </button>
 
-            {/* User */}
+            {/* User Profile */}
             {token ? (
               <div
                 onClick={handleUser}
@@ -131,6 +141,7 @@ const Header = ({ toggleSidebar }) => {
               >
                 {firstLetter}
 
+                {/* User Dropdown */}
                 {isOpen && (
                   <div className="absolute top-10 right-0 w-44 bg-white text-black rounded-xl shadow-lg py-2 z-50">
                     <div className="px-4 py-2">
@@ -144,6 +155,7 @@ const Header = ({ toggleSidebar }) => {
                       View Channel
                     </Link>
 
+                    {/* Logout Button */}
                     <button
                       onClick={() => {
                         localStorage.removeItem("token");
@@ -161,6 +173,7 @@ const Header = ({ toggleSidebar }) => {
                 )}
               </div>
             ) : (
+              // Sign In Button
               <Link
                 to="/login"
                 className="flex items-center gap-1 px-2 py-1 border-2 border-blue-400 rounded-full"
