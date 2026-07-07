@@ -12,6 +12,7 @@ import {
   getVideo,
   likeVideo,
   dislikeVideo,
+  updateViews,
 } from "../services/videoService";
 
 // Video player page
@@ -41,17 +42,17 @@ const VideoPlayer = () => {
 
   // Fetch all videos to display as related videos
   useEffect(() => {
-    const fetchVideos = async () => {
+    const fetchVideo = async () => {
       try {
-        const response = await getAllVideos();
-        setRelatedVideos(response.data);
+        const response = await updateViews(id);
+        setVideo(response.data.video);
       } catch (error) {
-        console.log(error.message);
+        console.log(error.response?.data || error.message);
       }
     };
 
-    fetchVideos();
-  }, []);
+    fetchVideo();
+  }, [id]);
 
   const handleLike = async () => {
     try {
@@ -162,28 +163,30 @@ const VideoPlayer = () => {
 
         {/* Right Section - Related Videos */}
         <section className="space-y-4">
-          {relatedVideos.map((item) => (
-            <div
-              key={item._id}
-              className="flex cursor-pointer gap-3 rounded-lg p-2 hover:bg-gray-100"
-            >
-              <img
-                src={item.thumbnailUrl}
-                alt={item.title}
-                className="h-24 w-40 rounded-lg object-cover"
-              />
+          {relatedVideos
+            .filter((item) => item._id !== id)
+            .map((item) => (
+              <div
+                key={item._id}
+                className="flex cursor-pointer gap-3 rounded-lg p-2 hover:bg-gray-100"
+              >
+                <img
+                  src={item.thumbnailUrl}
+                  alt={item.title}
+                  className="h-24 w-40 rounded-lg object-cover"
+                />
 
-              <div>
-                <h3 className="line-clamp-2 text-sm font-semibold">
-                  {item.title}
-                </h3>
+                <div>
+                  <h3 className="line-clamp-2 text-sm font-semibold">
+                    {item.title}
+                  </h3>
 
-                <p className="mt-1 text-sm text-gray-500">{item.channel}</p>
+                  <p className="mt-1 text-sm text-gray-500">{item.channel}</p>
 
-                <p className="text-sm text-gray-500">{item.views} views</p>
+                  <p className="text-sm text-gray-500">{item.views} views</p>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
         </section>
       </section>
     </div>

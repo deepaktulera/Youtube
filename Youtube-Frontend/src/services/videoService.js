@@ -11,6 +11,8 @@ export const likeVideo = (id) => api.put(`/video/${id}/like`);
 
 export const dislikeVideo = (id) => api.put(`/video/${id}/dislike`);
 
+export const updateViews = (id) => api.put(`/video/${id}/views`);
+
 export const uploadVideo = (data) => api.post("/video/upload", data);
 
 export const deleteVideo = (id) => api.delete(`/video/${id}`);

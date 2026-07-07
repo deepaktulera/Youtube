@@ -184,6 +184,37 @@ export const dislikeVideo = async (req, res) => {
   }
 };
 
+export const updateViews = async (req, res) => {
+  try {
+    const video = await Video.findByIdAndUpdate(
+      req.params.id,
+      {
+        $inc: {
+          views: 1,
+        },
+      },
+      {
+        new: true,
+      },
+    );
+
+    if (!video) {
+      return res.status(404).json({
+        message: "Video not found",
+      });
+    }
+
+    res.status(200).json({
+      message: "View updated successfully",
+      video,
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
 export const deleteVideo = async (req, res) => {
   try {
     const { id } = req.params;
