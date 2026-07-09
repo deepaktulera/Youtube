@@ -67,9 +67,9 @@ const EditChannel = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
+    <div className="min-h-screen flex items-center justify-center px-4">
       {/* Edit Channel Form Container */}
-      <div className="w-full max-w-xl rounded-xl bg-white p-6 shadow">
+      <div className="w-full max-w-xl rounded-xl bg-gray-50 p-6 shadow-2xl">
         <h1 className="mb-6 text-center text-2xl font-bold">
           Edit Channel
         </h1>
