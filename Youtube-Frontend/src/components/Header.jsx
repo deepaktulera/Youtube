@@ -1,14 +1,8 @@
 import React, { useState } from "react";
-import {
-  Search,
-  Menu,
-  Bell,
-  Plus,
-  User,
-  ArrowLeft,
-} from "lucide-react";
+import { Search, Menu, Bell, Plus, User, ArrowLeft } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { getChannel } from "../services/channelService";
+import { toast } from "react-toastify";
 
 // Header component displayed at the top of every page
 const Header = ({ toggleSidebar }) => {
@@ -161,9 +155,14 @@ const Header = ({ toggleSidebar }) => {
                         localStorage.removeItem("token");
                         localStorage.removeItem("username");
                         localStorage.removeItem("name");
+                        localStorage.removeItem("id");
 
-                        navigate("/");
-                        window.location.reload();
+                        toast.success("Logged out successfully!");
+
+                        setTimeout(() => {
+                          navigate("/");
+                          window.location.reload();
+                        }, 1000);
                       }}
                       className="w-full text-left px-4 py-2 hover:bg-gray-100 text-red-600"
                     >

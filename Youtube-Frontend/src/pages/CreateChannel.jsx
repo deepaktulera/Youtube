@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { createChannel } from "../services/channelService";
+import { toast } from "react-toastify";
 
 // Page for creating a new YouTube channel
 const CreateChannel = () => {
@@ -37,10 +38,11 @@ const CreateChannel = () => {
       await createChannel(username, formData);
 
       // Navigate to the newly created channel
+      toast.success("Channel created successfully!");
       navigate(`/channel/${username}`);
     } catch (error) {
       // Display any API errors in the console
-      console.log(error.response?.data || error.message);
+      toast.error("Unable to create channel!");
     }
   };
 

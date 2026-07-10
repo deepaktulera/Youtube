@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { uploadVideo } from "../services/videoService";
+import { toast } from "react-toastify";
 
 // Initial form values
 const data = {
@@ -36,16 +37,13 @@ const UploadVideo = () => {
       const response = await uploadVideo(formData);
 
       // Show success message
-      alert(response.data.message);
+      toast.success("Video uploaded successfully!");
 
       // Reset form after successful upload
       setFormData(data);
     } catch (error) {
-      // Log error in console
-      console.log(error.response?.data || error.message);
-
       // Show error message
-      alert(error.response?.data?.message || "Something went wrong");
+      toast.error(error.response?.data?.message || "Something went wrong");
     }
   };
 
@@ -57,9 +55,7 @@ const UploadVideo = () => {
         className="flex w-full max-w-2xl flex-col gap-4 rounded-2xl bg-white p-6 shadow-md"
       >
         {/* Page Heading */}
-        <h1 className="text-center text-3xl font-bold">
-          Upload Video
-        </h1>
+        <h1 className="text-center text-3xl font-bold">Upload Video</h1>
 
         {/* Video Title */}
         <input

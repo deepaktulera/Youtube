@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Logo from "/YouTube-Logo.svg";
 import { registerUser } from "../services/authService";
+import { toast } from "react-toastify";
 
 // Registration page for creating a new account
 const Register = () => {
@@ -33,7 +34,7 @@ const Register = () => {
 
     // Validate password confirmation
     if (formData.password !== formData.confirmPassword) {
-      alert("Passwords do not match");
+      toast.warning("Password Not Match")
       return;
     }
 
@@ -47,7 +48,7 @@ const Register = () => {
       });
 
       // Show success message
-      alert(response.data.message || "Registration Successful!");
+      toast.success(response.data.message || "Registration Successful!")
 
       // Clear the form
       setFormData({
@@ -59,10 +60,11 @@ const Register = () => {
       });
 
       // Redirect to login page
+      toast.success("Account created successfully!");
       navigate("/login");
     } catch (error) {
       // Display error message
-      alert(error.response?.data?.message || "Something went wrong");
+      toast.error(error.response?.data?.message || "Something went wrong")
     }
   };
 

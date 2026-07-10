@@ -47,16 +47,19 @@ export const addComment = async (req, res) => {
 };
 
 export const getComments = async (req, res) => {
-  const { id } = req.params;
+  try {
+    const { id } = req.params;
 
-  const video = await Video.findById(id);
+    const comments = await Comment.find({ video: id })
+      .populate("user", "name username")
+      .sort({ createdAt: -1 });
 
-  if (!video) {
-      return res.status(404).json({
-        message: "Video not found",
-      });
-    }
-    
+    res.status(200).json(comments);
+  } catch (error) {
+    res.status(500).json({
+      message: error.message,
+    });
+  }
 };
 
 // Update Comment
@@ -76,7 +79,7 @@ export const updateComment = async (req, res) => {
     }
 
     // Check if the logged-in user owns the comment
-    if (comment.userId.toString() !== req.user.id) {
+    if (comment.user.toString() !== req.user.id) {
       return res.status(403).json({
         success: false,
         message: "You are not authorized to update this comment",
@@ -119,7 +122,7 @@ export const deleteComment = async (req, res) => {
     }
 
     // Check ownership
-    if (comment.userId.toString() !== req.user.id) {
+    if (comment.user.toString() !== req.user.id){
       return res.status(403).json({
         success: false,
         message: "You are not authorized to delete this comment",

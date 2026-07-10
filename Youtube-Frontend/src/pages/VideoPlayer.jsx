@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense, lazy } from "react";
 import { useParams } from "react-router-dom";
 import {
   Forward,
@@ -7,6 +7,7 @@ import {
   ThumbsDown,
   Bookmark,
 } from "lucide-react";
+
 import {
   getAllVideos,
   getVideo,
@@ -15,37 +16,20 @@ import {
   updateViews,
 } from "../services/videoService";
 
-// Video player page
+const CommentSection = lazy(() => import("../components/CommentSection"));
+
 const VideoPlayer = () => {
-  // Get video id from the URL
   const { id } = useParams();
 
-  // Store current video details
   const [video, setVideo] = useState(null);
-
-  // Store related videos
   const [relatedVideos, setRelatedVideos] = useState([]);
 
-  // Fetch selected video whenever the id changes
+  // Fetch current video
   useEffect(() => {
     const fetchVideo = async () => {
       try {
         const response = await getVideo(id);
         setVideo(response.data);
-      } catch (error) {
-        console.log(error.message);
-      }
-    };
-
-    fetchVideo();
-  }, [id]);
-
-  // Fetch all videos to display as related videos
-  useEffect(() => {
-    const fetchVideo = async () => {
-      try {
-        const response = await updateViews(id);
-        setVideo(response.data.video);
       } catch (error) {
         console.log(error.response?.data || error.message);
       }
@@ -54,27 +38,53 @@ const VideoPlayer = () => {
     fetchVideo();
   }, [id]);
 
+  // Increase view count
+  useEffect(() => {
+    const increaseViews = async () => {
+      try {
+        await updateViews(id);
+      } catch (error) {
+        console.log(error.response?.data || error.message);
+      }
+    };
+
+    increaseViews();
+  }, [id]);
+
+  // Fetch related videos
+  useEffect(() => {
+    const fetchRelatedVideos = async () => {
+      try {
+        const response = await getAllVideos();
+        setRelatedVideos(response.data);
+      } catch (error) {
+        console.log(error.response?.data || error.message);
+      }
+    };
+
+    fetchRelatedVideos();
+  }, []);
+
+  // Like
   const handleLike = async () => {
     try {
       const response = await likeVideo(video._id);
-
       setVideo(response.data.video);
     } catch (error) {
       console.log(error.response?.data || error.message);
     }
   };
 
+  // Dislike
   const handleDislike = async () => {
     try {
       const response = await dislikeVideo(video._id);
-
       setVideo(response.data.video);
     } catch (error) {
       console.log(error.response?.data || error.message);
     }
   };
 
-  // Show loading state until video data is available
   if (!video) {
     return (
       <div className="flex min-h-screen items-center justify-center">
@@ -85,21 +95,19 @@ const VideoPlayer = () => {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Main Layout */}
       <section className="grid grid-cols-1 gap-6 px-1 lg:grid-cols-[5fr_2fr] lg:px-13">
-        {/* Left Section - Video Details */}
+        {/* Left Section */}
         <section>
-          {/* Video Player */}
+          {/* Video */}
           <div className="aspect-video w-full overflow-hidden rounded-xl bg-black">
             <video src={video.videoUrl} controls className="h-full w-full" />
           </div>
 
-          {/* Video Title */}
+          {/* Title */}
           <h1 className="mt-4 text-2xl font-bold">{video.title}</h1>
 
-          {/* Channel Information & Action Buttons */}
+          {/* Channel & Buttons */}
           <div className="mt-5 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-            {/* Channel Info */}
             <div className="flex items-center gap-4">
               <img
                 src="https://www.bing.com/th/id/OIP.hXWwNOQw15ZVWKlMs-xv0wHaFQ?w=193&h=137&c=8&rs=1&qlt=90&o=6&pid=3.1&rm=2"
@@ -109,7 +117,6 @@ const VideoPlayer = () => {
 
               <div>
                 <h2 className="text-lg font-semibold">{video.channel}</h2>
-
                 <p className="text-sm text-gray-500">13K subscribers</p>
               </div>
 
@@ -118,7 +125,6 @@ const VideoPlayer = () => {
               </button>
             </div>
 
-            {/* Action Buttons */}
             <div className="flex gap-3 overflow-x-auto scrollbar-hide">
               <button
                 onClick={handleLike}
@@ -153,15 +159,21 @@ const VideoPlayer = () => {
             </div>
           </div>
 
-          {/* Video Description */}
+          {/* Description */}
           <div className="mt-5 rounded-xl bg-gray-100 px-3 py-3">
             <p className="font-semibold">{video.views} views</p>
-
             <p className="mt-2 text-gray-700">{video.description}</p>
+          </div>
+
+          {/* Comments */}
+          <div className="mt-8">
+            <Suspense fallback={<h2>Loading comments...</h2>}>
+              <CommentSection videoId={video._id} />
+            </Suspense>
           </div>
         </section>
 
-        {/* Right Section - Related Videos */}
+        {/* Right Section */}
         <section className="space-y-4">
           {relatedVideos
             .filter((item) => item._id !== id)

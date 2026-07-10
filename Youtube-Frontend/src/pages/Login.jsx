@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Logo from "/YouTube-Logo.svg";
 import { loginUser } from "../services/authService";
+import { toast } from "react-toastify";
 
 // Login page
 const Login = () => {
@@ -53,10 +54,11 @@ const Login = () => {
       });
 
       // Redirect to home page
+      toast.success("Login successful!");
       navigate("/");
     } catch (error) {
       // Display error message
-      alert(error.response?.data?.message || "Something went wrong");
+      toast.error(error.response?.data?.message || "Something went wrong")
     } finally {
       // Stop loading
       setIsLoading(false);

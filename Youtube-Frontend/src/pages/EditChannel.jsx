@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getChannel, updateChannel } from "../services/channelService";
+import { toast } from "react-toastify";
 
 // Page for editing an existing channel
 const EditChannel = () => {
@@ -58,11 +59,12 @@ const EditChannel = () => {
       // Send updated data to the backend
       await updateChannel(username, formData);
 
+      toast.success("Profile updated successfully!");
       // Navigate back to the channel page
       navigate(`/channel/${username}`);
     } catch (error) {
       // Display any API errors
-      console.log(error.response?.data || error.message);
+      toast.error("Profile update failed!");
     }
   };
 
