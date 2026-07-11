@@ -4,7 +4,7 @@ import Loader from "./Loader";
 import { getAllVideos } from "../services/videoService";
 
 // Component to display all videos on the home page
-const VideoGrid = ({ category }) => {
+const VideoGrid = ({ category, search }) => {
   // Store all fetched videos
   const [videos, setVideos] = useState([]);
 
@@ -32,10 +32,16 @@ const VideoGrid = ({ category }) => {
   };
 
   // Filter videos based on selected category
-  const filteredVideos =
-    category === "All"
-      ? videos
-      : videos.filter((video) => video.category === category);
+  const filteredVideos = videos.filter((video) => {
+    const categoryMatch =
+      category === "All" || video.category === category;
+
+    const searchMatch = video.title
+      .toLowerCase()
+      .includes(search.toLowerCase());
+
+    return categoryMatch && searchMatch;
+  });
 
   // Display loader while videos are loading
   if (loading) {

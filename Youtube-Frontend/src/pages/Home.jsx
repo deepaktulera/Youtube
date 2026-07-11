@@ -1,19 +1,25 @@
 import React, { useState } from "react";
+import { useOutletContext } from "react-router-dom";
 import CategoryBar from "../components/CategoryBar";
 import VideoGrid from "../components/VideoGrid";
 
-// Home page that displays all videos
 const Home = () => {
-  // Store the currently selected category
   const [category, setCategory] = useState("All");
+
+  // Receive search from HomeLayout
+  const { search } = useOutletContext();
 
   return (
     <div className="sticky top-10 w-full overflow-y-auto">
-      {/* Category filter */}
-      <CategoryBar category={category} setCategory={setCategory} />
+      <CategoryBar
+        category={category}
+        setCategory={setCategory}
+      />
 
-      {/* Display videos based on the selected category */}
-      <VideoGrid category={category} />
+      <VideoGrid
+        category={category}
+        search={search}
+      />
     </div>
   );
 };

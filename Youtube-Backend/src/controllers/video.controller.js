@@ -3,7 +3,18 @@ import Channel from "../models/Channel.js";
 
 export const fetchVideos = async (req, res) => {
   try {
-    const videos = await Video.find();
+    const { search } = req.query;
+
+    let filter = {};
+
+    if (search) {
+      filter.title = {
+        $regex: search,
+        $options: "i", // case insensitive
+      };
+    }
+
+    const videos = await Video.find(filter);
 
     res.status(200).json(videos);
   } catch (error) {

@@ -5,7 +5,7 @@ import { getChannel } from "../services/channelService";
 import { toast } from "react-toastify";
 
 // Header component displayed at the top of every page
-const Header = ({ toggleSidebar }) => {
+const Header = ({ toggleSidebar, search, setSearch }) => {
   // Controls the user profile dropdown
   const [isOpen, setIsOpen] = useState(false);
 
@@ -65,6 +65,8 @@ const Header = ({ toggleSidebar }) => {
           <input
             type="text"
             placeholder="Search"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
             autoFocus
             className="flex-1 border border-gray-300 rounded-full px-4 py-2 outline-none"
           />
@@ -95,6 +97,8 @@ const Header = ({ toggleSidebar }) => {
             <input
               type="text"
               placeholder="Search"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
               className="w-64 lg:w-md p-2 border border-gray-300 rounded-l-full px-5 outline-none"
             />
 

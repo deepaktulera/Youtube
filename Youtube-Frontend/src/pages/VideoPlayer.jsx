@@ -15,11 +15,13 @@ import {
   dislikeVideo,
   updateViews,
 } from "../services/videoService";
+import { useNavigate } from "react-router-dom";
 
 const CommentSection = lazy(() => import("../components/CommentSection"));
 
 const VideoPlayer = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const [video, setVideo] = useState(null);
   const [relatedVideos, setRelatedVideos] = useState([]);
@@ -180,6 +182,7 @@ const VideoPlayer = () => {
             .map((item) => (
               <div
                 key={item._id}
+                onClick={() => navigate(`/watch/${item._id}`)}
                 className="flex cursor-pointer gap-3 rounded-lg p-2 hover:bg-gray-100"
               >
                 <img
