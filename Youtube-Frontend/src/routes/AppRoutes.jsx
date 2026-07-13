@@ -18,6 +18,7 @@ const UploadVideo = lazy(() => import("../pages/UploadVideo"));
 const CreateChannel = lazy(() => import("../pages/CreateChannel"));
 const EditChannel = lazy(() => import("../pages/EditChannel"));
 const NotFound = lazy(() => import("../pages/NotFound"));
+const EditVideo = lazy(() => import("../pages/EditVideo"))
 
 const AppRoutes = () => {
   return (
@@ -47,6 +48,11 @@ const AppRoutes = () => {
         {/* Watch Video */}
         <Route element={<WatchLayout />}>
           <Route path="/watch/:id" element={<VideoPlayer />} />
+        </Route>
+
+        <Route element={<ProtectedRoute />}>
+          <Route
+            path="/edit-video/:id" element={<EditVideo />} />
         </Route>
 
         {/* Channel */}

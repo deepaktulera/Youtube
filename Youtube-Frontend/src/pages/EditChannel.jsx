@@ -24,13 +24,15 @@ const EditChannel = () => {
       try {
         // Get existing channel information
         const response = await getChannel(username);
+        const data = response.data.channel
+        
 
         // Populate the form with existing data
         setFormData({
-          channelname: response.data.channelname || "",
-          channeldescription: response.data.channeldescription || "",
-          avatar: response.data.avatar || "",
-          channelbanner: response.data.channelbanner || "",
+          channelname: data.channelname || "",
+          channeldescription: data.channeldescription || "",
+          avatar: data.avatar || "",
+          channelbanner: data.channelbanner || "",
         });
       } catch (error) {
         console.log(error);

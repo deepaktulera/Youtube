@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { uploadVideo } from "../services/videoService";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 // Initial form values
 const data = {
@@ -14,8 +15,10 @@ const data = {
 
 // Upload Video page
 const UploadVideo = () => {
+  const navigate = useNavigate()
   // Store form data
   const [formData, setFormData] = useState(data);
+  navigate
 
   // Update form values when user types
   const handleChange = ({ target }) => {
@@ -41,6 +44,8 @@ const UploadVideo = () => {
 
       // Reset form after successful upload
       setFormData(data);
+      navigate("/")
+
     } catch (error) {
       // Show error message
       toast.error(error.response?.data?.message || "Something went wrong");

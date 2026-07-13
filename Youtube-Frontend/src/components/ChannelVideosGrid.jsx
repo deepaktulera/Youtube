@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { getChannelVideos } from "../services/videoService";
-import VideoCard from "./VideoCard";
+import ChannelVideo from "./ChannelVideo";
 import Loader from "./Loader";
 
 // Component to display all videos uploaded by a specific channel
-const ChannelVideos = ({ uploader }) => {
+const ChannelVideosGrid = ({ uploader }) => {
+  // Controle the menu 
+  const [openMenuId, setOpenMenuId] = useState(null);
   // Stores the list of videos
   const [videos, setVideos] = useState([]);
 
@@ -51,10 +53,10 @@ const ChannelVideos = ({ uploader }) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
       {videos.map((video) => (
-        <VideoCard key={video._id} video={video} />
+        <ChannelVideo key={video._id} video={video} openMenuId={openMenuId} setOpenMenuId={setOpenMenuId} />
       ))}
     </div>
   );
 };
 
-export default ChannelVideos;
+export default ChannelVideosGrid;

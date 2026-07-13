@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { getChannel, deleteChannel } from "../services/channelService";
-import ChannelVideos from "../components/ChannelVideos";
 import defaultProfile from "../assets/icons/default_profile.svg";
 import defaultBanner from "../assets/icons/channel_banner.svg";
+import ChannelVideosGrid from "../components/ChannelVideosGrid";
 
 // Displays a user's channel page
 const Channel = () => {
@@ -126,8 +126,8 @@ const Channel = () => {
       </div>
 
       {/* Display all uploaded videos */}
-      <div className="px-4 md:px-10 py-6">
-        <ChannelVideos uploader={username} />
+      <div className="px-1 md:px-5 py-6">
+        <ChannelVideosGrid uploader={username} />
       </div>
     </div>
   );
