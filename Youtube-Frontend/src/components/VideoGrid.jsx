@@ -3,39 +3,40 @@ import VideoCard from "./VideoCard";
 import Loader from "./Loader";
 import { getAllVideos } from "../services/videoService";
 
-// Component to display all videos on the home page
+// Displays all videos on the home page
 const VideoGrid = ({ category, search }) => {
-  // Store all fetched videos
+  // Store fetched videos
   const [videos, setVideos] = useState([]);
 
-  // Controls the loading state
+  // Track loading status
   const [loading, setLoading] = useState(true);
 
-  // Fetch videos when the component mounts
+  // Fetch videos when component loads
   useEffect(() => {
     fetchVideos();
   }, []);
 
-  // Fetch all videos from the backend
+  // Get videos from backend
   const fetchVideos = async () => {
     try {
       const res = await getAllVideos();
 
-      // Save videos into state
+      // Update videos state
       setVideos(res.data);
     } catch (error) {
       console.log(error);
     } finally {
-      // Hide loader after request completes
+      // Stop loading after API response
       setLoading(false);
     }
   };
 
-  // Filter videos based on selected category
+  // Filter videos by category and search text
   const filteredVideos = videos.filter((video) => {
-    const categoryMatch =
-      category === "All" || video.category === category;
+    // Check selected category
+    const categoryMatch = category === "All" || video.category === category;
 
+    // Check search keyword
     const searchMatch = video.title
       .toLowerCase()
       .includes(search.toLowerCase());
@@ -43,7 +44,7 @@ const VideoGrid = ({ category, search }) => {
     return categoryMatch && searchMatch;
   });
 
-  // Display loader while videos are loading
+  // Show loader while fetching videos
   if (loading) {
     return <Loader />;
   }
@@ -51,12 +52,12 @@ const VideoGrid = ({ category, search }) => {
   return (
     <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4 pt-16">
       {filteredVideos.length > 0 ? (
-        // Display filtered videos
+        // Render filtered video cards
         filteredVideos.map((video) => (
           <VideoCard key={video._id} video={video} />
         ))
       ) : (
-        // Show message when no videos match the selected category
+        // Display empty state when no videos are found
         <div className="col-span-full flex justify-center items-center min-h-[50vh]">
           <h2 className="text-3xl md:text-5xl font-semibold text-gray-500">
             No videos found.

@@ -23,7 +23,7 @@ export const verifyToken = (req, res, next) => {
     }
 
     // Verify token
-    const decoded = jwt.verify(token, process.env.SECURITY_KEY);
+    const decoded = jwt.verify(token, process.env.SECURITY_KEY || "Hy Buddy!");
 
     // Attach user data to request
     req.user = decoded;

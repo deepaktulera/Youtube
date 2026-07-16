@@ -4,20 +4,20 @@ import Logo from "/YouTube-Logo.svg";
 import { loginUser } from "../services/authService";
 import { toast } from "react-toastify";
 
-// Login page
+// Component for user login
 const Login = () => {
   const navigate = useNavigate();
 
-  // Controls loading state while logging in
+  // Manage login button loading state
   const [isLoading, setIsLoading] = useState(false);
 
-  // Stores login form data
+  // Store login form values
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   });
 
-  // Update form values when user types
+  // Update form data when input changes
   const handleChange = ({ target }) => {
     const { name, value } = target;
 
@@ -27,64 +27,68 @@ const Login = () => {
     }));
   };
 
-  // Handle login form submission
+  // Handle user login
   const handleSubmit = async (e) => {
-    // Prevent page refresh
+    // Prevent form submission refresh
     e.preventDefault();
 
-    // Show loading state
+    // Start loading state
     setIsLoading(true);
 
     try {
-      // Authenticate user
+      // Send login credentials to backend
       const response = await loginUser(formData);
 
+      // Extract user authentication data
       const { token, id, username, name } = response.data;
 
-      // Save user data in local storage
+      // Store user information locally
       localStorage.setItem("token", token);
       localStorage.setItem("id", id);
       localStorage.setItem("username", username);
       localStorage.setItem("name", name);
 
-      // Clear form
+      // Reset form fields
       setFormData({
         email: "",
         password: "",
       });
 
-      // Redirect to home page
+      // Show success message and redirect
       toast.success("Login successful!");
       navigate("/");
     } catch (error) {
-      // Display error message
-      toast.error(error.response?.data?.message || "Something went wrong")
+      // Show login error message
+      toast.error(error.response?.data?.message || "Something went wrong");
     } finally {
-      // Stop loading
+      // Stop loading state
       setIsLoading(false);
     }
   };
 
   return (
+    // Login page container
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
-      {/* Login Card */}
+      {/* Login form card */}
       <div className="w-full max-w-md rounded-xl bg-white p-8 shadow-lg">
-        {/* Application Logo */}
+        {/* Application logo */}
         <div className="mb-6 flex justify-center">
           <img src={Logo} alt="YouTube" className="h-25" />
         </div>
 
-        {/* Page Heading */}
-        <h2 className="text-center text-3xl font-semibold">Sign In</h2>
+        {/* Page title */}
+        <h2 className="text-center text-3xl font-semibold">
+          Sign In
+        </h2>
 
-        {/* Welcome Message */}
+        {/* Login description */}
         <p className="mt-2 mb-6 text-center text-gray-500">
           Welcome back! Please login to your account.
         </p>
 
-        {/* Login Form */}
+        {/* Login form */}
         <form onSubmit={handleSubmit} className="space-y-5">
-          {/* Email Input */}
+          {/* Email field */}
           <input
             type="email"
             name="email"
@@ -95,7 +99,7 @@ const Login = () => {
             required
           />
 
-          {/* Password Input */}
+          {/* Password field */}
           <input
             type="password"
             name="password"
@@ -106,7 +110,7 @@ const Login = () => {
             required
           />
 
-          {/* Login Button */}
+          {/* Submit login button */}
           <button
             type="submit"
             disabled={isLoading}
@@ -116,7 +120,7 @@ const Login = () => {
           </button>
         </form>
 
-        {/* Registration Link */}
+        {/* Link to registration page */}
         <p className="mt-6 text-center text-gray-600">
           Don't have an account?
           <Link

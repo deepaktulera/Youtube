@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 const connectDatabase = async () => {
   try {
     // connect database with local mongodb
-    await mongoose.connect(process.env.MONGO_URL);
+    await mongoose.connect(process.env.MONGO_URL || "mongodb://localhost:27017/Youtube");
    
     // database connected message
     console.log("MongoDB Connected");

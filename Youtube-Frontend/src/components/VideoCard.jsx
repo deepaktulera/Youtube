@@ -1,12 +1,12 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-// Displays a single video preview card
+// Displays a single video card
 const VideoCard = ({ video }) => {
   return (
-    // Navigate to the selected video's watch page
+    // Link to video watch page
     <Link to={`/watch/${video._id}`} className="w-full p-2 rounded-2xl border">
-      {/* Video Thumbnail */}
+      {/* Video thumbnail section */}
       <div className="overflow-hidden rounded-2xl group">
         <img
           src={video.thumbnailUrl}
@@ -15,21 +15,21 @@ const VideoCard = ({ video }) => {
         />
       </div>
 
-      {/* Video Information */}
+      {/* Video details section */}
       <div className="flex gap-3 mt-3">
-        {/* Channel Avatar */}
+        {/* Channel profile avatar */}
         <div className="w-10 h-10 rounded-full bg-red-600 text-white flex items-center justify-center font-bold">
           {video.channel.charAt(0).toUpperCase()}
         </div>
 
         <div>
-          {/* Video Title */}
+          {/* Video title */}
           <h2 className="font-semibold line-clamp-2">{video.title}</h2>
 
-          {/* Channel Name */}
+          {/* Channel name */}
           <p className="text-sm text-gray-600">{video.channel}</p>
 
-          {/* Video Views */}
+          {/* Views count */}
           <p className="text-xs text-gray-500">{video.views} views</p>
         </div>
       </div>

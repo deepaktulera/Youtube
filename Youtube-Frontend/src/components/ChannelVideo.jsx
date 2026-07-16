@@ -3,9 +3,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { EllipsisVertical } from "lucide-react";
 import { deleteVideo } from "../services/videoService";
 
-const ChannelVideo = ({ video, openMenuId, setOpenMenuId, }) => {
+// Displays a single channel video card
+const ChannelVideo = ({ video, openMenuId, setOpenMenuId }) => {
   const navigate = useNavigate();
 
+  // Delete video handler
   const handleDelete = async (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -18,6 +20,7 @@ const ChannelVideo = ({ video, openMenuId, setOpenMenuId, }) => {
     }
   };
 
+  // Navigate to edit video page
   const handleEdit = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -26,23 +29,28 @@ const ChannelVideo = ({ video, openMenuId, setOpenMenuId, }) => {
   };
 
   return (
+    // Link to video watch page
     <Link
       to={`/watch/${video._id}`}
       className="relative w-full p-1 rounded-2xl border"
     >
       <div className="relative overflow-hidden rounded-2xl">
+        {/* Video thumbnail */}
         <img
           src={video.thumbnailUrl}
           alt={video.title}
           className="aspect-video object-cover rounded-2xl transition-transform duration-700 hover:scale-105"
         />
 
+        {/* Video options menu */}
         <div className="absolute right-2 top-2">
           {openMenuId !== video._id ? (
             <button
               onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
+
+                // Open or close menu
                 setOpenMenuId(
                   openMenuId === video._id ? null : video._id
                 );
@@ -51,6 +59,7 @@ const ChannelVideo = ({ video, openMenuId, setOpenMenuId, }) => {
               <EllipsisVertical />
             </button>
           ) : (
+            // Edit and delete actions
             <div className="absolute right-0 top-0 flex flex-col rounded-lg bg-white shadow-lg p-2 z-50">
               <button
                 onClick={handleEdit}
@@ -70,11 +79,14 @@ const ChannelVideo = ({ video, openMenuId, setOpenMenuId, }) => {
         </div>
       </div>
 
+      {/* Video information */}
       <div className="flex gap-3 mt-3">
+        {/* Channel avatar */}
         <div className="w-10 h-10 rounded-full bg-red-600 text-white flex items-center justify-center font-bold">
           {video.channel.charAt(0).toUpperCase()}
         </div>
 
+        {/* Video details */}
         <div>
           <h2 className="font-semibold line-clamp-2">{video.title}</h2>
 

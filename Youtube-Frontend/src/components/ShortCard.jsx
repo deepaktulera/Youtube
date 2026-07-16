@@ -1,10 +1,11 @@
 import React from "react";
 
-// Displays a single short video
+// Displays a single short video card
 function ShortCard({ short }) {
   return (
+    // Center the short video on the screen
     <div className="flex justify-center items-center w-full h-screen">
-      {/* Short Video Player */}
+      {/* Short video player */}
       <video
         src={short.videoUrl}
         controls

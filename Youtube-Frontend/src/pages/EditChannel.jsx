@@ -3,14 +3,14 @@ import { useNavigate, useParams } from "react-router-dom";
 import { getChannel, updateChannel } from "../services/channelService";
 import { toast } from "react-toastify";
 
-// Page for editing an existing channel
+// Page component for editing an existing channel
 const EditChannel = () => {
-  // Get username from the URL
+  // Get username from route parameters
   const { username } = useParams();
 
   const navigate = useNavigate();
 
-  // Store form data
+  // Store channel form data
   const [formData, setFormData] = useState({
     channelname: "",
     channeldescription: "",
@@ -18,16 +18,15 @@ const EditChannel = () => {
     channelbanner: "",
   });
 
-  // Fetch channel details when the component loads
+  // Fetch existing channel data
   useEffect(() => {
     const fetchChannel = async () => {
       try {
-        // Get existing channel information
+        // Get channel details from backend
         const response = await getChannel(username);
-        const data = response.data.channel
-        
+        const data = response.data.channel;
 
-        // Populate the form with existing data
+        // Fill form with existing channel data
         setFormData({
           channelname: data.channelname || "",
           channeldescription: data.channeldescription || "",
@@ -35,6 +34,7 @@ const EditChannel = () => {
           channelbanner: data.channelbanner || "",
         });
       } catch (error) {
+        // Handle fetch error
         console.log(error);
       }
     };
@@ -42,7 +42,7 @@ const EditChannel = () => {
     fetchChannel();
   }, [username]);
 
-  // Update form data when an input changes
+  // Update form values when input changes
   const handleChange = ({ target }) => {
     const { name, value } = target;
 
@@ -52,35 +52,36 @@ const EditChannel = () => {
     }));
   };
 
-  // Submit updated channel information
+  // Submit updated channel details
   const handleSubmit = async (e) => {
-    // Prevent page refresh
+    // Prevent page reload
     e.preventDefault();
 
     try {
-      // Send updated data to the backend
+      // Send updated channel data
       await updateChannel(username, formData);
 
+      // Show success message and redirect
       toast.success("Profile updated successfully!");
-      // Navigate back to the channel page
       navigate(`/channel/${username}`);
     } catch (error) {
-      // Display any API errors
+      // Handle update error
       toast.error("Profile update failed!");
     }
   };
 
   return (
+    // Page container
     <div className="min-h-screen flex items-center justify-center px-4">
-      {/* Edit Channel Form Container */}
+      {/* Edit form card */}
       <div className="w-full max-w-xl rounded-xl bg-gray-50 p-6 shadow-2xl">
         <h1 className="mb-6 text-center text-2xl font-bold">
           Edit Channel
         </h1>
 
-        {/* Edit Channel Form */}
+        {/* Channel update form */}
         <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Channel Name */}
+          {/* Channel name input */}
           <input
             type="text"
             name="channelname"
@@ -91,7 +92,7 @@ const EditChannel = () => {
             required
           />
 
-          {/* Channel Description */}
+          {/* Channel description input */}
           <textarea
             name="channeldescription"
             value={formData.channeldescription}
@@ -102,7 +103,7 @@ const EditChannel = () => {
             required
           />
 
-          {/* Avatar URL */}
+          {/* Profile image URL input */}
           <input
             type="text"
             name="avatar"
@@ -112,7 +113,7 @@ const EditChannel = () => {
             className="w-full rounded border p-3 outline-none"
           />
 
-          {/* Banner URL */}
+          {/* Banner image URL input */}
           <input
             type="text"
             name="channelbanner"
@@ -122,7 +123,7 @@ const EditChannel = () => {
             className="w-full rounded border p-3 outline-none"
           />
 
-          {/* Save Button */}
+          {/* Save changes button */}
           <button
             type="submit"
             className="w-full rounded bg-black py-3 text-white hover:bg-gray-900"

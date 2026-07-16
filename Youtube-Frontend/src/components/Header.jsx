@@ -4,45 +4,45 @@ import { Link, useNavigate } from "react-router-dom";
 import { getChannel } from "../services/channelService";
 import { toast } from "react-toastify";
 
-// Header component displayed at the top of every page
+// Header component shown on top of all pages
 const Header = ({ toggleSidebar, search, setSearch }) => {
-  // Controls the user profile dropdown
+  // Controls profile dropdown visibility
   const [isOpen, setIsOpen] = useState(false);
 
-  // Controls the mobile search bar
+  // Controls mobile search visibility
   const [showMobileSearch, setShowMobileSearch] = useState(false);
 
   const navigate = useNavigate();
 
-  // Get user authentication details from local storage
+  // Get user data from local storage
   const token = localStorage.getItem("token");
   const username = localStorage.getItem("username");
 
-  // Get the first letter of the username for the profile avatar
+  // Create profile avatar letter
   const firstLetter = username ? username.charAt(0).toUpperCase() : "";
 
-  // Toggle the user dropdown menu
+  // Toggle profile dropdown
   function handleUser() {
     setIsOpen(!isOpen);
   }
 
-  // Handle Create button click
+  // Handle create video/channel navigation
   const handleCreate = async () => {
-    // Redirect to login if user is not authenticated
+    // Redirect unauthenticated users to login
     if (!token) {
       navigate("/login");
       return;
     }
 
     try {
-      // Check whether the user already has a channel
+      // Check if user has an existing channel
       await getChannel(username);
 
-      // Navigate to upload page if channel exists
+      // Open upload page if channel exists
       navigate("/upload");
     } catch (error) {
       if (error.response?.status === 404) {
-        // Redirect to create channel page if channel doesn't exist
+        // Create channel if no channel exists
         navigate(`/create-channel/${username}`);
       } else {
         console.log(error);
@@ -53,7 +53,7 @@ const Header = ({ toggleSidebar, search, setSearch }) => {
   return (
     <nav className="flex bg-white w-full items-center justify-between fixed top-0 h-14 px-3 sm:px-5 z-50">
       {showMobileSearch ? (
-        // Mobile Search Layout
+        // Mobile search view
         <div className="flex items-center w-full md:hidden gap-2">
           <button
             onClick={() => setShowMobileSearch(false)}
@@ -62,6 +62,7 @@ const Header = ({ toggleSidebar, search, setSearch }) => {
             <ArrowLeft size={22} />
           </button>
 
+          {/* Search input */}
           <input
             type="text"
             placeholder="Search"
@@ -77,12 +78,13 @@ const Header = ({ toggleSidebar, search, setSearch }) => {
         </div>
       ) : (
         <>
-          {/* Left Section */}
+          {/* Left navigation section */}
           <section className="flex items-center gap-2 sm:gap-4">
             <button onClick={toggleSidebar} className="cursor-pointer">
               <Menu />
             </button>
 
+            {/* Website logo */}
             <Link to="/" className="flex items-center">
               <img
                 src="/YouTube-Logo.svg"
@@ -92,7 +94,7 @@ const Header = ({ toggleSidebar, search, setSearch }) => {
             </Link>
           </section>
 
-          {/* Desktop Search */}
+          {/* Desktop search section */}
           <section className="hidden md:flex items-center">
             <input
               type="text"
@@ -107,9 +109,9 @@ const Header = ({ toggleSidebar, search, setSearch }) => {
             </button>
           </section>
 
-          {/* Right Section */}
+          {/* Right action section */}
           <section className="flex items-center gap-2">
-            {/* Mobile Search Button */}
+            {/* Open mobile search */}
             <button
               onClick={() => setShowMobileSearch(true)}
               className="md:hidden p-2 hover:bg-gray-100 rounded-full"
@@ -117,7 +119,7 @@ const Header = ({ toggleSidebar, search, setSearch }) => {
               <Search size={22} />
             </button>
 
-            {/* Create Button */}
+            {/* Create content button */}
             <button
               onClick={handleCreate}
               className="flex items-center gap-1 px-4 py-2 bg-gray-100 hover:bg-gray-200 rounded-full cursor-pointer"
@@ -126,12 +128,12 @@ const Header = ({ toggleSidebar, search, setSearch }) => {
               <span className="hidden md:block">Create</span>
             </button>
 
-            {/* Notifications */}
+            {/* Notification button */}
             <button className="p-2 hover:bg-gray-100 rounded-full cursor-pointer">
               <Bell size={22} />
             </button>
 
-            {/* User Profile */}
+            {/* User authentication section */}
             {token ? (
               <div
                 onClick={handleUser}
@@ -139,13 +141,14 @@ const Header = ({ toggleSidebar, search, setSearch }) => {
               >
                 {firstLetter}
 
-                {/* User Dropdown */}
+                {/* Profile dropdown menu */}
                 {isOpen && (
                   <div className="absolute top-10 right-0 w-44 bg-white text-black rounded-xl shadow-lg py-2 z-50">
                     <div className="px-4 py-2">
                       <p className="font-semibold">{username}</p>
                     </div>
 
+                    {/* Channel link */}
                     <Link
                       to={`/channel/${username}`}
                       className="block px-4 py-2 hover:bg-gray-100"
@@ -153,9 +156,10 @@ const Header = ({ toggleSidebar, search, setSearch }) => {
                       View Channel
                     </Link>
 
-                    {/* Logout Button */}
+                    {/* Logout action */}
                     <button
                       onClick={() => {
+                        // Clear stored user data
                         localStorage.removeItem("token");
                         localStorage.removeItem("username");
                         localStorage.removeItem("name");
@@ -163,6 +167,7 @@ const Header = ({ toggleSidebar, search, setSearch }) => {
 
                         toast.success("Logged out successfully!");
 
+                        // Redirect after logout
                         setTimeout(() => {
                           navigate("/");
                           window.location.reload();
@@ -176,7 +181,7 @@ const Header = ({ toggleSidebar, search, setSearch }) => {
                 )}
               </div>
             ) : (
-              // Sign In Button
+              // Login button for guest users
               <Link
                 to="/login"
                 className="flex items-center gap-1 px-2 py-1 border-2 border-blue-400 rounded-full"

@@ -3,14 +3,14 @@ import { useNavigate, useParams } from "react-router-dom";
 import { createChannel } from "../services/channelService";
 import { toast } from "react-toastify";
 
-// Page for creating a new YouTube channel
+// Page component for creating a new channel
 const CreateChannel = () => {
   const navigate = useNavigate();
 
-  // Get username from the URL
+  // Get username from route parameters
   const { username } = useParams();
 
-  // Store all form input values
+  // Store channel form data
   const [formData, setFormData] = useState({
     channelname: "",
     channeldescription: "",
@@ -18,7 +18,7 @@ const CreateChannel = () => {
     channelbanner: "",
   });
 
-  // Update form data whenever an input field changes
+  // Update form state when input changes
   const handleChange = ({ target }) => {
     const { name, value } = target;
 
@@ -28,35 +28,36 @@ const CreateChannel = () => {
     }));
   };
 
-  // Submit the form and create a new channel
+  // Handle channel creation
   const handleSubmit = async (e) => {
-    // Prevent page refresh
+    // Prevent default form submission
     e.preventDefault();
 
     try {
-      // Send channel details to the backend
+      // Send channel data to backend
       await createChannel(username, formData);
 
-      // Navigate to the newly created channel
+      // Show success message and redirect
       toast.success("Channel created successfully!");
       navigate(`/channel/${username}`);
     } catch (error) {
-      // Display any API errors in the console
+      // Handle creation error
       toast.error("Unable to create channel!");
     }
   };
 
   return (
+    // Page container
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
-      {/* Create Channel Form Container */}
+      {/* Form card */}
       <div className="w-full max-w-xl rounded-xl bg-white p-6 shadow">
         <h1 className="mb-6 text-center text-2xl font-bold">
           Create Your Channel
         </h1>
 
-        {/* Channel Creation Form */}
+        {/* Channel creation form */}
         <form onSubmit={handleSubmit} className="space-y-4">
-          {/* Channel Name */}
+          {/* Channel name input */}
           <input
             type="text"
             name="channelname"
@@ -67,7 +68,7 @@ const CreateChannel = () => {
             required
           />
 
-          {/* Channel Description */}
+          {/* Channel description input */}
           <textarea
             name="channeldescription"
             value={formData.channeldescription}
@@ -78,7 +79,7 @@ const CreateChannel = () => {
             required
           />
 
-          {/* Optional Avatar URL */}
+          {/* Avatar URL input */}
           <input
             type="text"
             name="avatar"
@@ -88,7 +89,7 @@ const CreateChannel = () => {
             className="w-full rounded border p-3 outline-none focus:ring-2 focus:ring-gray-300"
           />
 
-          {/* Optional Banner URL */}
+          {/* Banner URL input */}
           <input
             type="text"
             name="channelbanner"
@@ -98,7 +99,7 @@ const CreateChannel = () => {
             className="w-full rounded border p-3 outline-none focus:ring-2 focus:ring-gray-300"
           />
 
-          {/* Submit Button */}
+          {/* Submit button */}
           <button
             type="submit"
             className="w-full rounded bg-black py-3 text-white transition hover:bg-gray-900"

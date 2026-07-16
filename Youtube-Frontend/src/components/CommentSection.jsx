@@ -10,33 +10,33 @@ import {
 import { useNavigate } from "react-router-dom";
 
 const CommentSection = ({ videoId }) => {
-  // Logged in user id
+  // Get logged-in user id
   const currentUserId = localStorage.getItem("id");
 
   const navigate = useNavigate();
 
-  // Store all comments
+  // Store comments list
   const [comments, setComments] = useState([]);
 
-  // New comment text
+  // Store new comment text
   const [text, setText] = useState("");
 
-  // Edit comment states
+  // Store edit comment data
   const [editingId, setEditingId] = useState(null);
   const [editingText, setEditingText] = useState("");
 
-  // Controls the menu visibility
+  // Control comment menu visibility
   const [showMenu, setShowMenu] = useState(false);
 
-  // Stores which comment's menu is open
+  // Store selected comment menu id
   const [selectedComment, setSelectedComment] = useState(null);
 
-  // Fetch comments whenever video changes
+  // Fetch comments when video changes
   useEffect(() => {
     fetchComments();
   }, [videoId]);
 
-  // Get all comments
+  // Fetch comments from API
   const fetchComments = async () => {
     try {
       const response = await getComments(videoId);
@@ -46,7 +46,7 @@ const CommentSection = ({ videoId }) => {
     }
   };
 
-  // Add new comment
+  // Add a new comment
   const handleAddComment = async () => {
     if (!text.trim()) return toast.warning("Please enter a comment!");
 
@@ -62,7 +62,7 @@ const CommentSection = ({ videoId }) => {
     }
   };
 
-  // Update comment
+  // Update existing comment
   const handleUpdateComment = async (id) => {
     if (!editingText.trim()) return;
 
@@ -93,10 +93,10 @@ const CommentSection = ({ videoId }) => {
 
   return (
     <div>
-      {/* Total comments */}
+      {/* Display total comments count */}
       <h2 className="mb-5 text-xl font-bold">{comments.length} Comments</h2>
 
-      {/* Add Comment */}
+      {/* Comment input section */}
       <div className="mb-8">
         <textarea
           rows={1}
@@ -114,17 +114,17 @@ const CommentSection = ({ videoId }) => {
         </button>
       </div>
 
-      {/* Show all comments */}
+      {/* Render comments */}
       <div className="h-40 overflow-y-auto">
         {comments.map((comment) => (
           <div
             key={comment._id}
             className="mb-3 border-b border-b-lime-800 rounded-xl p-2"
           >
-            {/* Username */}
+            {/* Comment author */}
             <h3 className="font-semibold">{comment.user.name}</h3>
 
-            {/* Edit Mode */}
+            {/* Edit comment section */}
             {editingId === comment._id ? (
               <div>
                 <input
@@ -148,33 +148,33 @@ const CommentSection = ({ videoId }) => {
                 </button>
               </div>
             ) : (
-              // Normal View
+              // Display comment content
               <div className="relative flex justify-between">
                 <p>{comment.text}</p>
 
-                {/* Show menu only for comment owner */}
+                {/* Show actions only for comment owner */}
                 {comment.user?._id === currentUserId && (
                   <div className="relative">
-                    {/* Three-dot icon */}
+                    {/* Open comment menu */}
                     <EllipsisVertical
                       className="cursor-pointer"
                       onClick={() => {
-                        // If same menu is open, close it
                         if (showMenu && selectedComment === comment._id) {
+                          // Close current menu
                           setShowMenu(false);
                           setSelectedComment(null);
                         } else {
-                          // Otherwise open this comment's menu
+                          // Open selected comment menu
                           setShowMenu(true);
                           setSelectedComment(comment._id);
                         }
                       }}
                     />
 
-                    {/* Show menu */}
+                    {/* Comment action menu */}
                     {showMenu && selectedComment === comment._id && (
                       <div className="absolute right-0 mt-2 w-24 rounded border bg-white shadow">
-                        {/* Edit Button */}
+                        {/* Edit action */}
                         <button
                           className="block w-full px-3 py-2 text-left hover:bg-gray-100"
                           onClick={() => {
@@ -188,7 +188,7 @@ const CommentSection = ({ videoId }) => {
                           Edit
                         </button>
 
-                        {/* Delete Button */}
+                        {/* Delete action */}
                         <button
                           className="block w-full px-3 py-2 text-left text-red-600 hover:bg-gray-100"
                           onClick={() => {

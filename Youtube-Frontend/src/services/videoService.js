@@ -1,20 +1,46 @@
 import api from "./axios";
 
-export const getAllVideos = () => api.get("/videos");
+// Fetch all videos from the server
+export const getAllVideos = () =>
+  // Send GET request to retrieve all videos
+  api.get("/videos");
 
-export const getVideo = (id) => api.get(`/video/${id}`);
+// Fetch a single video by its ID
+export const getVideo = (id) =>
+  // Send GET request to retrieve video details
+  api.get(`/video/${id}`);
 
+// Fetch all videos uploaded by a specific channel
 export const getChannelVideos = (uploader) =>
+  // Send GET request using uploader username
   api.get(`/videos/channel/${uploader}`);
 
-export const likeVideo = (id) => api.put(`/video/${id}/like`);
+// Like a video using its ID
+export const likeVideo = (id) =>
+  // Send PUT request to add a like
+  api.put(`/video/${id}/like`);
 
-export const dislikeVideo = (id) => api.put(`/video/${id}/dislike`);
+// Dislike a video using its ID
+export const dislikeVideo = (id) =>
+  // Send PUT request to add a dislike
+  api.put(`/video/${id}/dislike`);
 
-export const updateViews = (id) => api.put(`/video/${id}/views`);
+// Increase the view count of a video
+export const updateViews = (id) =>
+  // Send PUT request to update video views
+  api.put(`/video/${id}/views`);
 
-export const uploadVideo = (data) => api.post("/video/upload", data);
+// Upload a new video
+export const uploadVideo = (data) =>
+  // Send POST request with video details
+  api.post("/video/upload", data);
 
-export const deleteVideo = (id) => api.delete(`/video/${id}`);
+// Delete a video using its ID
+export const deleteVideo = (id) =>
+  // Send DELETE request to remove the video
+  api.delete(`/video/${id}`);
 
-export const updateVideo = (id, data) => api.patch(`/video/${id}`, data);
+// Update existing video information
+export const updateVideo = (id, data) =>
+  // Send PATCH request with updated video data
+  api.patch(`/video/${id}`, data);

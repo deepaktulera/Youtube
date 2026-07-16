@@ -1,63 +1,80 @@
 import Video from "../models/Video.js";
 import Channel from "../models/Channel.js";
 
+// Get all videos
 export const fetchVideos = async (req, res) => {
   try {
+    // Get search query
     const { search } = req.query;
 
+    // Create filter object
     let filter = {};
 
+    // Apply search filter
     if (search) {
       filter.title = {
         $regex: search,
-        $options: "i", // case insensitive
+        $options: "i", // Case insensitive search
       };
     }
 
+    // Fetch videos
     const videos = await Video.find(filter);
 
+    // Return videos
     res.status(200).json(videos);
   } catch (error) {
+    // Handle server error
     res.status(500).json({
       message: error.message,
     });
   }
 };
 
+// Get single video
 export const fetchVideo = async (req, res) => {
   try {
+    // Get video ID
     const { id } = req.params;
 
+    // Find video
     const video = await Video.findById(id);
 
+    // Check if video exists
     if (!video) {
       return res.status(404).json({
         message: "Video not found",
       });
     }
 
+    // Return video
     res.status(200).json(video);
   } catch (error) {
+    // Handle server error
     res.status(500).json({
       message: error.message,
     });
   }
 };
 
+// Upload a new video
 export const uploadVideo = async (req, res) => {
   try {
+    // Get video details
     const { title, description, thumbnailUrl, videoUrl, category, uploader } =
       req.body;
 
     // Find uploader's channel
     const channel = await Channel.findOne({ username: uploader });
 
+    // Check if channel exists
     if (!channel) {
       return res.status(404).json({
         message: "Channel not found. Please create a channel first.",
       });
     }
 
+    // Create new video
     const newVideo = await Video.create({
       title,
       description,
@@ -65,85 +82,104 @@ export const uploadVideo = async (req, res) => {
       videoUrl,
       category,
       uploader,
-      channel: channel.channelname, // Automatically use actual channel name
+      channel: channel.channelname,
     });
 
+    // Return success response
     res.status(201).json({
       message: "Video uploaded successfully",
       video: newVideo,
     });
   } catch (error) {
+    // Handle server error
     res.status(500).json({
       message: error.message,
     });
   }
 };
 
+// Update video
 export const updateVideo = async (req, res) => {
   try {
+    // Get video ID
     const { id } = req.params;
 
+    // Update video
     const updatedVideo = await Video.findByIdAndUpdate(id, req.body, {
       new: true,
       runValidators: true,
     });
 
+    // Check if video exists
     if (!updatedVideo) {
       return res.status(404).json({
         message: "Video not found",
       });
     }
 
+    // Return updated video
     res.status(200).json({
       message: "Video updated successfully",
       video: updatedVideo,
     });
   } catch (error) {
+    // Handle server error
     res.status(500).json({
       message: error.message,
     });
   }
 };
 
+// Get all videos of a channel
 export const getChannelVideos = async (req, res) => {
   try {
+    // Get uploader username
     const { uploader } = req.params;
 
+    // Find videos
     const videos = await Video.find({ uploader });
 
+    // Return videos
     res.status(200).json(videos);
   } catch (error) {
+    // Handle server error
     res.status(500).json({
       message: error.message,
     });
   }
 };
 
+// Like or unlike a video
 export const likeVideo = async (req, res) => {
   try {
+    // Find video
     const video = await Video.findById(req.params.id);
 
+    // Check if video exists
     if (!video) {
       return res.status(404).json({
         message: "Video not found",
       });
     }
 
+    // Get logged-in user ID
     const userId = req.user.id;
 
-    // If already liked, remove the like
+    // Remove like if already liked
     if (video.likes.includes(userId)) {
       video.likes.pull(userId);
     } else {
       // Add like
       video.likes.push(userId);
 
-      // Remove dislike if it exists
+      // Remove dislike
       video.dislikes.pull(userId);
     }
 
+    // Save changes
     await video.save();
 
+    // Return updated data
     res.status(200).json({
       message: "Like updated successfully",
       likes: video.likes.length,
@@ -153,50 +189,60 @@ export const likeVideo = async (req, res) => {
       video,
     });
   } catch (error) {
+    // Handle server error
     res.status(500).json({
       message: error.message,
     });
   }
 };
 
+// Dislike or remove dislike
 export const dislikeVideo = async (req, res) => {
   try {
+    // Find video
     const video = await Video.findById(req.params.id);
 
+    // Check if video exists
     if (!video) {
       return res.status(404).json({
         message: "Video not found",
       });
     }
 
+    // Get logged-in user ID
     const userId = req.user.id;
 
-    // If already disliked, remove the dislike
+    // Remove dislike if already disliked
     if (video.dislikes.includes(userId)) {
       video.dislikes.pull(userId);
     } else {
       // Add dislike
       video.dislikes.push(userId);
 
-      // Remove like if it exists
+      // Remove like
       video.likes.pull(userId);
     }
 
+    // Save changes
     await video.save();
 
+    // Return updated data
     res.status(200).json({
       message: "Dislike updated successfully",
       video,
     });
   } catch (error) {
+    // Handle server error
     res.status(500).json({
       message: error.message,
     });
   }
 };
 
+// Increase video views
 export const updateViews = async (req, res) => {
   try {
+    // Increment view count
     const video = await Video.findByIdAndUpdate(
       req.params.id,
       {
@@ -206,46 +252,56 @@ export const updateViews = async (req, res) => {
       },
       {
         new: true,
-      },
+      }
     );
 
+    // Check if video exists
     if (!video) {
       return res.status(404).json({
         message: "Video not found",
       });
     }
 
+    // Return updated video
     res.status(200).json({
       message: "View updated successfully",
       video,
     });
   } catch (error) {
+    // Handle server error
     res.status(500).json({
       message: error.message,
     });
   }
 };
 
+// Delete video
 export const deleteVideo = async (req, res) => {
   try {
+    // Get video ID
     const { id } = req.params;
+
+    // Print ID for debugging
     console.log(id);
 
+    // Delete video
     const deletedVideo = await Video.findByIdAndDelete(id);
 
+    // Check if video exists
     if (!deletedVideo) {
       return res.status(404).json({
         message: "Video not found",
       });
     }
 
+    // Return success response
     res.status(200).json({
       message: "Video deleted successfully",
     });
   } catch (error) {
+    // Handle server error
     res.status(500).json({
       message: error.message,
     });
   }
 };
-

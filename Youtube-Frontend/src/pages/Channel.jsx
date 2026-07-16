@@ -7,27 +7,27 @@ import ChannelVideosGrid from "../components/ChannelVideosGrid";
 
 // Displays a user's channel page
 const Channel = () => {
-  // Store channel information
+  // Store channel details
   const [channel, setChannel] = useState(null);
 
   const navigate = useNavigate();
 
-  // Get username from the URL
+  // Get username from URL parameters
   const { username } = useParams();
 
-  // Fetch channel details whenever the username changes
+  // Fetch channel data on username change
   useEffect(() => {
     const fetchChannel = async () => {
       try {
-        // Fetch channel information from the backend
+        // Get channel details from API
         const response = await getChannel(username);
 
-        // Save channel data into state
+        // Save channel data
         setChannel(response.data);
       } catch (error) {
         console.log(error);
 
-        // Redirect user to create channel page if channel doesn't exist
+        // Redirect if channel does not exist
         navigate(`/create-channel/${username}`);
       }
     };
@@ -35,9 +35,9 @@ const Channel = () => {
     fetchChannel();
   }, [username, navigate]);
 
-  // Delete the current channel
+  // Delete channel handler
   const handleDelete = async () => {
-    // Ask for confirmation before deleting
+    // Confirm before deleting channel
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this channel?",
     );
@@ -45,50 +45,50 @@ const Channel = () => {
     if (!confirmDelete) return;
 
     try {
-      // Delete channel from the backend
+      // Delete channel from API
       await deleteChannel(channel._id);
 
-      // Navigate back to home page
+      // Redirect after deletion
       navigate("/");
     } catch (error) {
       console.log(error.response?.data || error.message);
     }
   };
 
-  // Channel name with fallback value
+  // Channel display name
   const channelName = channel ? channel.channelname : "Channel Name";
 
-  // Channel description with fallback value
+  // Channel description
   const channelDescription = channel ? channel.channeldescription : "";
 
-  // Display uploaded profile image or default profile image
+  // Channel profile image
   const profileImage =
     channel && channel.avatar ? channel.avatar : defaultProfile;
 
-  // Display uploaded banner image or default banner image
+  // Channel banner image
   const channelBanner =
     channel && channel.channelbanner ? channel.channelbanner : defaultBanner;
 
   return (
     <div className="w-full px-2">
-      {/* Channel Banner */}
+      {/* Channel banner image */}
       <img
         src={channelBanner}
         alt="Channel Banner"
         className="w-full h-20 sm:h-30 md:h-40 lg:h-50 xl:h-60 object-cover rounded-xl"
       />
 
-      {/* Channel Information */}
+      {/* Channel information section */}
       <div className="flex flex-col md:flex-row md:items-center gap-6 px-4 py-6 justify-between">
         <div className="flex gap-4 justify-between">
-          {/* Profile Image */}
+          {/* Channel profile image */}
           <img
             src={profileImage}
             alt="profile"
             className="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-cover self-center md:self-start"
           />
 
-          {/* Channel Details */}
+          {/* Channel details */}
           <div className="text-left">
             <h2 className="text-2xl md:text-3xl font-bold">{channelName}</h2>
 
@@ -98,16 +98,16 @@ const Channel = () => {
               {channelDescription}
             </p>
 
-            {/* Subscriber and Video Count */}
+            {/* Channel statistics */}
             <p className="text-sm text-gray-500 mt-2">
               0 subscribers • 0 videos
             </p>
           </div>
         </div>
 
-        {/* Action Buttons */}
+        {/* Channel action buttons */}
         <div className="flex justify-center sm:flex-row md:flex-col gap-2">
-          {/* Edit Channel Button */}
+          {/* Edit channel button */}
           <button
             onClick={() => navigate(`/edit-channel/${username}`)}
             className="w-20 px-2 py-1 bg-black text-white rounded-full hover:bg-gray-300 hover:text-black transition"
@@ -115,7 +115,7 @@ const Channel = () => {
             Edit
           </button>
 
-          {/* Delete Channel Button */}
+          {/* Delete channel button */}
           <button
             onClick={handleDelete}
             className="w-20 px-2 py-1 bg-red-600 text-white rounded-full hover:bg-red-700 transition"
@@ -125,7 +125,7 @@ const Channel = () => {
         </div>
       </div>
 
-      {/* Display all uploaded videos */}
+      {/* Uploaded videos section */}
       <div className="px-1 md:px-5 py-6">
         <ChannelVideosGrid uploader={username} />
       </div>

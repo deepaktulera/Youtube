@@ -7,16 +7,20 @@ import {
 } from "../controllers/channel.controller.js";
 import { verifyToken } from "../middleware/verifyToken.js";
 
+// Create router
 const router = express.Router();
 
+// Get channel details by username
 router.get("/channel/:username", showChannel);
 
+// Create new channel (Protected route)
 router.post("/channel/:username", verifyToken, createChannel);
 
-// UPDATE CHANNEL
+// Update channel details (Protected route)
 router.patch("/channel/:username", verifyToken, updateChannel);
 
-// DELETE CHANNEL
+// Delete channel (Protected route)
 router.delete("/channel/:id", verifyToken, deleteChannel);
 
+// Export channel router
 export default router;

@@ -3,44 +3,45 @@ import { getChannelVideos } from "../services/videoService";
 import ChannelVideo from "./ChannelVideo";
 import Loader from "./Loader";
 
-// Component to display all videos uploaded by a specific channel
+// Displays all videos uploaded by a channel
 const ChannelVideosGrid = ({ uploader }) => {
-  // Controle the menu 
+  // Stores the currently opened video menu
   const [openMenuId, setOpenMenuId] = useState(null);
-  // Stores the list of videos
+
+  // Stores channel videos
   const [videos, setVideos] = useState([]);
 
-  // Controls the loading state
+  // Tracks loading state
   const [loading, setLoading] = useState(true);
 
-  // Fetch videos whenever the uploader changes
+  // Fetch videos when uploader changes
   useEffect(() => {
     fetchVideos();
   }, [uploader]);
 
-  // Fetch videos uploaded by the current channel
+  // Get videos from API
   const fetchVideos = async () => {
     try {
-      // Call the API
+      // Fetch videos uploaded by channel
       const res = await getChannelVideos(uploader);
 
-      // Save videos into state
+      // Update videos state
       setVideos(res.data);
     } catch (error) {
-      // Display error in console if API fails
+      // Handle API errors
       console.log(error.response?.data || error.message);
     } finally {
-      // Stop loader after request completes
+      // Hide loader after fetching completes
       setLoading(false);
     }
   };
 
-  // Show loader while fetching data
+  // Display loader during API request
   if (loading) {
     return <Loader />;
   }
 
-  // Show message if no videos are available
+  // Display empty state when no videos exist
   if (videos.length === 0) {
     return (
       <div className="flex justify-center items-center h-60">
@@ -49,11 +50,17 @@ const ChannelVideosGrid = ({ uploader }) => {
     );
   }
 
-  // Display all uploaded videos
+  // Render uploaded videos grid
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
       {videos.map((video) => (
-        <ChannelVideo key={video._id} video={video} openMenuId={openMenuId} setOpenMenuId={setOpenMenuId} />
+        // Render each video card
+        <ChannelVideo
+          key={video._id}
+          video={video}
+          openMenuId={openMenuId}
+          setOpenMenuId={setOpenMenuId}
+        />
       ))}
     </div>
   );

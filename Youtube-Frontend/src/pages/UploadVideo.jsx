@@ -3,7 +3,7 @@ import { uploadVideo } from "../services/videoService";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
-// Initial form values
+// Default upload form values
 const data = {
   title: "",
   description: "",
@@ -13,14 +13,14 @@ const data = {
   uploader: localStorage.getItem("username") || "",
 };
 
-// Upload Video page
+// Component for uploading a new video
 const UploadVideo = () => {
-  const navigate = useNavigate()
-  // Store form data
-  const [formData, setFormData] = useState(data);
-  navigate
+  const navigate = useNavigate();
 
-  // Update form values when user types
+  // Store video upload form data
+  const [formData, setFormData] = useState(data);
+
+  // Update form values when input changes
   const handleChange = ({ target }) => {
     const { name, value } = target;
 
@@ -30,39 +30,43 @@ const UploadVideo = () => {
     }));
   };
 
-  // Handle video upload
+  // Handle video upload submission
   const handleSubmit = async (e) => {
     // Prevent page refresh
     e.preventDefault();
 
     try {
-      // Upload video data to the server
-      const response = await uploadVideo(formData);
+      // Send video details to backend
+      await uploadVideo(formData);
 
       // Show success message
       toast.success("Video uploaded successfully!");
 
-      // Reset form after successful upload
+      // Reset form after upload
       setFormData(data);
-      navigate("/")
 
+      // Redirect to home page
+      navigate("/");
     } catch (error) {
-      // Show error message
+      // Show upload error message
       toast.error(error.response?.data?.message || "Something went wrong");
     }
   };
 
   return (
+    // Upload page container
     <div className="w-full min-h-screen flex items-center justify-center bg-gray-100 p-5">
-      {/* Upload Form */}
+      {/* Video upload form */}
       <form
         onSubmit={handleSubmit}
         className="flex w-full max-w-2xl flex-col gap-4 rounded-2xl bg-white p-6 shadow-md"
       >
-        {/* Page Heading */}
-        <h1 className="text-center text-3xl font-bold">Upload Video</h1>
+        {/* Page title */}
+        <h1 className="text-center text-3xl font-bold">
+          Upload Video
+        </h1>
 
-        {/* Video Title */}
+        {/* Video title input */}
         <input
           type="text"
           name="title"
@@ -73,7 +77,7 @@ const UploadVideo = () => {
           required
         />
 
-        {/* Video Description */}
+        {/* Video description input */}
         <textarea
           name="description"
           placeholder="Video Description"
@@ -84,7 +88,7 @@ const UploadVideo = () => {
           required
         />
 
-        {/* Thumbnail URL */}
+        {/* Thumbnail URL input */}
         <input
           type="text"
           name="thumbnailUrl"
@@ -95,7 +99,7 @@ const UploadVideo = () => {
           required
         />
 
-        {/* Video URL */}
+        {/* Video URL input */}
         <input
           type="text"
           name="videoUrl"
@@ -106,7 +110,7 @@ const UploadVideo = () => {
           required
         />
 
-        {/* Video Category */}
+        {/* Video category selection */}
         <select
           name="category"
           value={formData.category}
@@ -124,7 +128,7 @@ const UploadVideo = () => {
           <option value="Entertainment">Entertainment</option>
         </select>
 
-        {/* Upload Button */}
+        {/* Submit upload button */}
         <button
           type="submit"
           className="rounded-xl bg-blue-600 py-3 text-white transition hover:bg-blue-700"

@@ -2,10 +2,8 @@ import React, { Suspense, lazy } from "react";
 import { Routes, Route } from "react-router-dom";
 import ProtectedRoute from "./ProtectedRoute";
 
-// Layouts
-const HomeLayout = lazy(() => import("../layouts/HomeLayout"));
-const WatchLayout = lazy(() => import("../layouts/WatchLayout"));
-const ChannelLayout = lazy(() => import("../layouts/ChannelLayout"));
+// Single Layout
+const AppLayout = lazy(() => import("../layouts/AppLayout"));
 
 // Pages
 const Home = lazy(() => import("../pages/Home"));
@@ -18,7 +16,7 @@ const UploadVideo = lazy(() => import("../pages/UploadVideo"));
 const CreateChannel = lazy(() => import("../pages/CreateChannel"));
 const EditChannel = lazy(() => import("../pages/EditChannel"));
 const NotFound = lazy(() => import("../pages/NotFound"));
-const EditVideo = lazy(() => import("../pages/EditVideo"))
+const EditVideo = lazy(() => import("../pages/EditVideo"));
 
 const AppRoutes = () => {
   return (
@@ -30,46 +28,49 @@ const AppRoutes = () => {
       }
     >
       <Routes>
-        {/* Home Routes */}
-        <Route element={<HomeLayout />}>
+        {/* Main application routes */}
+        <Route element={<AppLayout enableSearch layoutType="home" />}>
           <Route path="/" element={<Home />} />
           <Route path="/shorts" element={<Shorts />} />
+        </Route>
 
-          {/* Protected Routes */}
+        {/* Protected routes with main layout */}
+        <Route element={<AppLayout enableSearch layoutType="home" />}>
           <Route element={<ProtectedRoute />}>
             <Route path="/upload" element={<UploadVideo />} />
           </Route>
         </Route>
 
-        {/* Authentication */}
+        {/* Authentication routes */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
 
-        {/* Watch Video */}
-        <Route element={<WatchLayout />}>
+        {/* Watch page */}
+        <Route element={<AppLayout layoutType="watch" />}>
           <Route path="/watch/:id" element={<VideoPlayer />} />
         </Route>
 
+        {/* Edit video */}
         <Route element={<ProtectedRoute />}>
-          <Route
-            path="/edit-video/:id" element={<EditVideo />} />
+          <Route path="/edit-video/:id" element={<EditVideo />} />
         </Route>
 
-        {/* Channel */}
-        <Route element={<ChannelLayout />}>
+        {/* Channel pages */}
+        <Route element={<AppLayout layoutType="channel" />}>
           <Route path="/channel/:username" element={<Channel />} />
 
-          {/* Protected Routes */}
+          {/* Protected channel routes */}
           <Route element={<ProtectedRoute />}>
             <Route
               path="/create-channel/:username"
               element={<CreateChannel />}
             />
+
             <Route path="/edit-channel/:username" element={<EditChannel />} />
           </Route>
         </Route>
 
-        {/* 404 */}
+        {/* Not found page */}
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Suspense>

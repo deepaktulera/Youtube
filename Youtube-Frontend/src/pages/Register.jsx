@@ -4,11 +4,11 @@ import Logo from "/YouTube-Logo.svg";
 import { registerUser } from "../services/authService";
 import { toast } from "react-toastify";
 
-// Registration page for creating a new account
+// Component for user registration
 const Register = () => {
   const navigate = useNavigate();
 
-  // Store all registration form data
+  // Store registration form values
   const [formData, setFormData] = useState({
     name: "",
     username: "",
@@ -17,7 +17,7 @@ const Register = () => {
     confirmPassword: "",
   });
 
-  // Update form values when the user types
+  // Update form state when input changes
   const handleChange = ({ target }) => {
     const { name, value } = target;
 
@@ -27,19 +27,19 @@ const Register = () => {
     }));
   };
 
-  // Handle registration form submission
+  // Handle registration submission
   const handleSubmit = async (e) => {
     // Prevent page refresh
     e.preventDefault();
 
-    // Validate password confirmation
+    // Check if both passwords match
     if (formData.password !== formData.confirmPassword) {
-      toast.warning("Password Not Match")
+      toast.warning("Password Not Match");
       return;
     }
 
     try {
-      // Register the user
+      // Send user details to backend
       const response = await registerUser({
         name: formData.name,
         username: formData.username,
@@ -47,10 +47,10 @@ const Register = () => {
         password: formData.password,
       });
 
-      // Show success message
-      toast.success(response.data.message || "Registration Successful!")
+      // Show registration success message
+      toast.success(response.data.message || "Registration Successful!");
 
-      // Clear the form
+      // Reset form fields
       setFormData({
         name: "",
         username: "",
@@ -59,20 +59,21 @@ const Register = () => {
         confirmPassword: "",
       });
 
-      // Redirect to login page
+      // Redirect user to login page
       toast.success("Account created successfully!");
       navigate("/login");
     } catch (error) {
-      // Display error message
-      toast.error(error.response?.data?.message || "Something went wrong")
+      // Show registration error message
+      toast.error(error.response?.data?.message || "Something went wrong");
     }
   };
 
   return (
+    // Registration page container
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
-      {/* Registration Card */}
+      {/* Registration form card */}
       <div className="w-full max-w-md rounded-xl bg-white p-8 shadow-lg">
-        {/* Application Logo */}
+        {/* Application logo */}
         <div className="mb-6 flex justify-center">
           <img
             src={Logo}
@@ -81,17 +82,19 @@ const Register = () => {
           />
         </div>
 
-        {/* Page Heading */}
-        <h2 className="text-center text-2xl font-semibold">Create Account</h2>
+        {/* Page title */}
+        <h2 className="text-center text-2xl font-semibold">
+          Create Account
+        </h2>
 
-        {/* Welcome Message */}
+        {/* Registration description */}
         <p className="mt-2 mb-6 text-center text-gray-500">
           Join and start watching your favourite videos.
         </p>
 
-        {/* Registration Form */}
+        {/* Registration form */}
         <form onSubmit={handleSubmit} className="space-y-5">
-          {/* Full Name */}
+          {/* Name input */}
           <input
             type="text"
             name="name"
@@ -102,7 +105,7 @@ const Register = () => {
             required
           />
 
-          {/* Username */}
+          {/* Username input */}
           <input
             type="text"
             name="username"
@@ -113,7 +116,7 @@ const Register = () => {
             required
           />
 
-          {/* Email */}
+          {/* Email input */}
           <input
             type="email"
             name="email"
@@ -124,7 +127,7 @@ const Register = () => {
             required
           />
 
-          {/* Password */}
+          {/* Password input */}
           <input
             type="password"
             name="password"
@@ -135,7 +138,7 @@ const Register = () => {
             required
           />
 
-          {/* Confirm Password */}
+          {/* Confirm password input */}
           <input
             type="password"
             name="confirmPassword"
@@ -146,7 +149,7 @@ const Register = () => {
             required
           />
 
-          {/* Register Button */}
+          {/* Submit registration button */}
           <button
             type="submit"
             className="w-full rounded-lg bg-red-600 py-3 text-white transition hover:bg-red-700"
@@ -155,7 +158,7 @@ const Register = () => {
           </button>
         </form>
 
-        {/* Login Link */}
+        {/* Link to login page */}
         <p className="mt-6 text-center text-gray-600">
           Already have an account?
           <Link
