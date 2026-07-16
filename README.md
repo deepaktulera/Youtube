@@ -2,7 +2,7 @@
 
 A beginner-friendly YouTube Clone built using the **MERN Stack** (MongoDB, Express.js, React.js, Node.js).
 
-This project allows users to register, log in, upload videos, create channels, watch videos, and comment on videos. It was created as a full-stack capstone project to learn how a real-world web application works using the MERN Stack. :contentReference[oaicite:0]{index=0}
+This project allows users to register, log in, upload videos, create channels, watch videos, and comment on videos. It was created as a full-stack capstone project to learn how a real-world web application works using the MERN Stack.
 
 ---
 
@@ -44,7 +44,6 @@ The frontend is responsible for the user interface, while the backend handles AP
 - Watch Video
 - Edit Video
 - Delete Video
-- Video Details Page
 
 ---
 
@@ -86,7 +85,7 @@ Only logged in users can
 - Vite
 - React Router DOM
 - Axios
-- CSS
+- TailwindCSS
 
 ---
 
@@ -228,7 +227,6 @@ Install packages
 ```bash
 npm install
 ```
-Install Nodemon
 
 Start backend
 
