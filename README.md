@@ -17,6 +17,14 @@ The frontend is responsible for the user interface, while the backend handles AP
 
 ---
 
+## 🎥 Demo Video
+
+Watch the project demo:
+
+▶️ https://res.cloudinary.com/fbbgw7iz/video/upload/v1784316518/Screen_Recording_2026-07-17_162441_1_uupkhy.mp4
+
+---
+
 # 🚀 Features
 
 ## 👤 Authentication
