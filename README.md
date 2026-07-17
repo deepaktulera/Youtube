@@ -152,6 +152,7 @@ Youtube-Backend
 Youtube-Frontend
 │
 ├── public
+│   └── Youtube-Logo.svg
 │
 ├── src
 │
