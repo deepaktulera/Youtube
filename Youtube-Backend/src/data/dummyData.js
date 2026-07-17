@@ -116,19 +116,6 @@ const dummyVideos = [
     dislikes: [],
     comments: [],
   },
-  {
-    title: "Stand-up Comedy Special",
-    description: "Enjoy the funniest stand-up moments.",
-    thumbnailUrl: "https://i.ytimg.com/vi/3tmd-ClpJxA/maxresdefault.jpg",
-    videoUrl: "https://cdn.truefilesize.com/mp4/sample-10mb.mp4",
-    category: "Entertainment",
-    uploader: "Laugh Hub",
-    channel: "Laugh Hub",
-    views: 456789,
-    likes: [],
-    dislikes: [],
-    comments: [],
-  },
 ];
 
 export default dummyVideos;
