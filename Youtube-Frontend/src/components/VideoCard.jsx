@@ -7,11 +7,11 @@ const VideoCard = ({ video }) => {
     // Link to video watch page
     <Link to={`/watch/${video._id}`} className="w-full p-2 rounded-2xl border">
       {/* Video thumbnail section */}
-      <div className="overflow-hidden rounded-2xl group">
+      <div className="overflow-hidden aspect-video rounded-2xl group">
         <img
           src={video.thumbnailUrl}
           alt={video.title}
-          className="w-full h-70 object-cover rounded-2xl transition-transform duration-700 group-hover:scale-105"
+          className="w-full object-contain rounded-2xl transition-transform duration-700 group-hover:scale-105"
         />
       </div>
 

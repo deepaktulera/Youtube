@@ -117,6 +117,12 @@ Youtube-Backend
 │   │   ├── comment.controller.js
 │   │   └── video.controller.js
 │   │
+│   ├── data
+│   │   └── dummyData.js
+│   │
+│   ├── seed
+│   │   └── seedVideos.js
+│   │
 │   ├── middleware
 │   │   └── verifyToken.js
 │   │
@@ -134,6 +140,7 @@ Youtube-Backend
 │
 ├── .env
 ├── package.json
+├── seed.js
 └── server.js
 ```
 
@@ -226,6 +233,11 @@ Install packages
 
 ```bash
 npm install
+```
+Add Dummy Data
+
+```bash
+node seed.js
 ```
 
 Start backend
