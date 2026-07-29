@@ -5,18 +5,18 @@ import { Link } from "react-router-dom";
 const VideoCard = ({ video }) => {
   return (
     // Link to video watch page
-    <Link to={`/watch/${video._id}`} className="w-full p-2 rounded-2xl border">
+    <Link to={`/watch/${video._id}`} className="w-full p-1 border border-emerald-500 rounded-xl">
       {/* Video thumbnail section */}
-      <div className="overflow-hidden aspect-video rounded-2xl group">
+      <div className="overflow-hidden aspect-video rounded-xl group">
         <img
           src={video.thumbnailUrl}
           alt={video.title}
-          className="w-full object-contain rounded-2xl transition-transform duration-700 group-hover:scale-105"
+          className="w-full object-contain rounded-xl transition-transform duration-700 group-hover:scale-105"
         />
       </div>
 
       {/* Video details section */}
-      <div className="flex gap-3 mt-3">
+      <div className="flex gap-4 pl-2 mt-3">
         {/* Channel profile avatar */}
         <div className="w-10 h-10 rounded-full bg-red-600 text-white flex items-center justify-center font-bold">
           {video.channel.charAt(0).toUpperCase()}

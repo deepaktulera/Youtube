@@ -123,9 +123,9 @@ const VideoPlayer = () => {
   return (
     // Video page container
     <div className="min-h-screen bg-white">
-      <section className="grid grid-cols-1 gap-6 px-1 lg:grid-cols-[5fr_2fr] lg:px-13">
+      <section className="grid grid-cols-1 gap-3 px-3 sm:grid-cols-[4fr_2fr] lg:grid-cols-[5fr_3fr] xl:grid-cols-[6fr_2fr] lg:pl-13">
         {/* Main video section */}
-        <section>
+        <section className="md:overflow-y-auto md:h-screen scroll-smooth">
           {/* Video player */}
           <div className="aspect-video w-full overflow-hidden rounded-xl bg-black">
             <video
@@ -143,25 +143,26 @@ const VideoPlayer = () => {
           {/* Channel information and actions */}
           <div className="mt-5 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
             {/* Channel details */}
-            <div className="flex items-center gap-4">
-              <img
-                src="https://www.bing.com/th/id/OIP.hXWwNOQw15ZVWKlMs-xv0wHaFQ?w=193&h=137&c=8&rs=1&qlt=90&o=6&pid=3.1&rm=2"
-                alt="Channel"
-                className="h-12 w-12 rounded-full object-cover"
-              />
+            <div className="flex items-center justify-between gap-4">
+              <div className="flex">
+                <img
+                  src="https://www.bing.com/th/id/OIP.hXWwNOQw15ZVWKlMs-xv0wHaFQ?w=193&h=137&c=8&rs=1&qlt=90&o=6&pid=3.1&rm=2"
+                  alt="Channel"
+                  className="h-12 w-12 rounded-full object-cover"
+                />
+                <div className="pl-4">
+                  <h2 className="text-lg font-semibold">
+                    {video.channel}
+                  </h2>
 
-              <div>
-                <h2 className="text-lg font-semibold">
-                  {video.channel}
-                </h2>
-
-                <p className="text-sm text-gray-500">
-                  13K subscribers
-                </p>
+                  <p className="text-sm text-gray-500">
+                    13K subscribers
+                  </p>
+                </div>
               </div>
 
               {/* Subscribe button */}
-              <button className="rounded-full bg-black px-5 py-2 text-white">
+              <button className="rounded-full text-sm md:text-md bg-black px-5 py-2 text-white">
                 Subscribe
               </button>
             </div>
@@ -227,38 +228,43 @@ const VideoPlayer = () => {
 
         {/* Related videos section */}
         <section className="space-y-4">
-          {relatedVideos
-            .filter((item) => item._id !== id)
-            .map((item) => (
-              // Related video card
-              <div
-                key={item._id}
-                onClick={() => navigate(`/watch/${item._id}`)}
-                className="flex cursor-pointer gap-3 rounded-lg p-2 hover:bg-gray-100"
-              >
-                {/* Video thumbnail */}
-                <img
-                  src={item.thumbnailUrl}
-                  alt={item.title}
-                  className="h-24 w-40 rounded-lg object-cover"
-                />
+          {relatedVideos.filter((item) => item._id !== id).length === 0 ? (
+            <div className="flex h-32 md:h-screen items-center justify-center rounded-lg bg-gray-100 text-gray-500">
+              No videos available
+            </div>
+          ) : (
+            relatedVideos
+              .filter((item) => item._id !== id)
+              .map((item) => (
+                <div
+                  key={item._id}
+                  onClick={() => navigate(`/watch/${item._id}`)}
+                  className="flex cursor-pointer gap-3 rounded-lg p-2 md:h-screen md:overflow-y-auto scroll-smooth hover:bg-gray-100"
+                >
+                  {/* Video thumbnail */}
+                  <img
+                    src={item.thumbnailUrl}
+                    alt={item.title}
+                    className="h-24 w-40 rounded-lg object-cover"
+                  />
 
-                {/* Video details */}
-                <div>
-                  <h3 className="line-clamp-2 text-sm font-semibold">
-                    {item.title}
-                  </h3>
+                  {/* Video details */}
+                  <div>
+                    <h3 className="line-clamp-2 text-sm font-semibold">
+                      {item.title}
+                    </h3>
 
-                  <p className="mt-1 text-sm text-gray-500">
-                    {item.channel}
-                  </p>
+                    <p className="mt-1 text-sm text-gray-500">
+                      {item.channel}
+                    </p>
 
-                  <p className="text-sm text-gray-500">
-                    {item.views} views
-                  </p>
+                    <p className="text-sm text-gray-500">
+                      {item.views} views
+                    </p>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))
+          )}
         </section>
       </section>
     </div>

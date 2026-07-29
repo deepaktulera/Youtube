@@ -75,42 +75,47 @@ const Channel = () => {
       <img
         src={channelBanner}
         alt="Channel Banner"
-        className="w-full h-20 sm:h-30 md:h-40 lg:h-50 xl:h-60 object-cover rounded-xl"
+        className="w-full h-36 sm:h-44 md:h-56 lg:h-64 xl:h-72 rounded-2xl object-cover shadow-lg"
       />
 
       {/* Channel information section */}
-      <div className="flex flex-col md:flex-row md:items-center gap-6 px-4 py-6 justify-between">
-        <div className="flex gap-4 justify-between">
-          {/* Channel profile image */}
+      <div className="flex md:flex-row md:items-center md:justify-between gap-8 px-2 md:px-6 py-4">
+        <div className="flex w-full sm:flex-row items-center justify-between md:justify-normal sm:items-start gap-6">
+
           <img
             src={profileImage}
             alt="profile"
-            className="w-20 h-20 md:w-28 md:h-28 lg:w-32 lg:h-32 rounded-full object-cover self-center md:self-start"
+            className="h-24 w-24 sm:h-28 sm:w-28 md:h-32 md:w-32 lg:h-36 lg:w-36 rounded-full border-4 border-white shadow-2xl object-cover"
           />
 
-          {/* Channel details */}
-          <div className="text-left">
-            <h2 className="text-2xl md:text-3xl font-bold">{channelName}</h2>
+          <div className="text-center sm:text-left">
 
-            <h3 className="text-sm text-gray-600">@{username}</h3>
+            <h1 className="text-3xl md:text-4xl font-bold text-gray-900">
+              {channelName}
+            </h1>
 
-            <p className="font-semibold text-sm text-gray-600 mt-2">
+            <p className="text-gray-500 text-sm md:text-base">
+              @{username}
+            </p>
+
+            <p className="max-w-2xl text-gray-700 leading-7">
               {channelDescription}
             </p>
 
-            {/* Channel statistics */}
-            <p className="text-sm text-gray-500 mt-2">
-              0 subscribers • 0 videos
-            </p>
+            <div className="flex flex-wrap justify-center sm:justify-start gap-5 text-sm text-gray-500">
+              <span>👥 <strong>0</strong> Subscribers</span>
+              <span>🎥 <strong>0</strong> Videos</span>
+            </div>
+
           </div>
         </div>
 
         {/* Channel action buttons */}
-        <div className="flex justify-center sm:flex-row md:flex-col gap-2">
+        <div className="hidden md:flex flex-row justify-center md:flex-col gap-3">
           {/* Edit channel button */}
           <button
             onClick={() => navigate(`/edit-channel/${username}`)}
-            className="w-20 px-2 py-1 bg-black text-white rounded-full hover:bg-gray-300 hover:text-black transition"
+            className="px-6 py-2 rounded-full bg-black text-white font-medium hover:bg-gray-800 transition-all duration-300 shadow-md hover:shadow-lg"
           >
             Edit
           </button>
@@ -118,7 +123,7 @@ const Channel = () => {
           {/* Delete channel button */}
           <button
             onClick={handleDelete}
-            className="w-20 px-2 py-1 bg-red-600 text-white rounded-full hover:bg-red-700 transition"
+            className="px-6 py-2 rounded-full bg-red-600 text-white font-medium hover:bg-red-700 transition-all duration-300 shadow-md hover:shadow-lg"
           >
             Delete
           </button>
@@ -127,9 +132,14 @@ const Channel = () => {
 
       {/* Uploaded videos section */}
       <div className="px-1 md:px-5 py-6">
+        <div className="pt-4 border-t"></div>
+
+        <h2 className="mb-6 text-2xl font-bold">
+          Uploaded Videos
+        </h2>
         <ChannelVideosGrid uploader={username} />
       </div>
-    </div>
+    </div >
   );
 };
 

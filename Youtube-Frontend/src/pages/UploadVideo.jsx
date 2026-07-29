@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
 // Default upload form values
-const data = {
+const initialData = {
   title: "",
   description: "",
   thumbnail: null,
@@ -13,14 +13,16 @@ const data = {
   uploader: localStorage.getItem("username") || "",
 };
 
-// Component for uploading a new video
 const UploadVideo = () => {
   const navigate = useNavigate();
 
-  // Store video upload form data
-  const [formData, setFormData] = useState(data);
+  // Form state
+  const [formData, setFormData] = useState(initialData);
 
-  // Update form values when input changes
+  // Loading state
+  const [loading, setLoading] = useState(false);
+
+  // Handle input changes
   const handleChange = ({ target }) => {
     const { name, value, files } = target;
 
@@ -30,9 +32,11 @@ const UploadVideo = () => {
     }));
   };
 
-  // Handle video upload submission
+  // Upload video
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    setLoading(true);
 
     try {
       const data = new FormData();
@@ -47,73 +51,95 @@ const UploadVideo = () => {
 
       await uploadVideo(data);
 
-      toast.success("Video uploaded successfully");
+      toast.success("Video uploaded successfully!");
 
+      // Optional: Reset form
+      setFormData(initialData);
+
+      // Redirect to home page
       navigate("/");
     } catch (error) {
-      toast.error(error.response?.data?.message);
+      toast.error(
+        error.response?.data?.message || "Failed to upload video."
+      );
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    // Upload page container
     <div className="w-full min-h-screen flex items-center justify-center bg-gray-100 p-5">
-      {/* Video upload form */}
       <form
         onSubmit={handleSubmit}
         className="flex w-full max-w-2xl flex-col gap-4 rounded-2xl bg-white p-6 shadow-md"
       >
-        {/* Page title */}
         <h1 className="text-center text-3xl font-bold">
           Upload Video
         </h1>
 
-        {/* Video title input */}
+        {/* Title */}
         <input
           type="text"
           name="title"
           placeholder="Video Title"
           value={formData.title}
           onChange={handleChange}
-          className="rounded-xl border p-3 outline-none focus:ring-2 focus:ring-blue-500"
+          disabled={loading}
+          className="rounded-xl border p-3 outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
           required
         />
 
-        {/* Video description input */}
+        {/* Description */}
         <textarea
           name="description"
           placeholder="Video Description"
           value={formData.description}
           onChange={handleChange}
+          disabled={loading}
           rows={5}
-          className="resize-none rounded-xl border p-3 outline-none focus:ring-2 focus:ring-blue-500"
+          className="resize-none rounded-xl border p-3 outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
           required
         />
 
-        {/* Thumbnail URL input */}
-        <input
-          type="file"
-          name="thumbnail"
-          accept="image/*"
-          onChange={handleChange}
-          required
-        />
+        {/* Thumbnail */}
+        <div>
+          <label className="block mb-2 font-medium">
+            Thumbnail
+          </label>
+          <input
+            type="file"
+            name="thumbnail"
+            accept="image/*"
+            onChange={handleChange}
+            disabled={loading}
+            className="w-full disabled:cursor-not-allowed"
+            required
+          />
+        </div>
 
-        {/* Video URL input */}
-        <input
-          type="file"
-          name="video"
-          accept="video/*"
-          onChange={handleChange}
-          required
-        />
+        {/* Video */}
+        <div>
+          <label className="block mb-2 font-medium">
+            Video
+          </label>
+          <input
+            type="file"
+            name="video"
+            accept="video/*"
+            onChange={handleChange}
+            disabled={loading}
+            className="w-full disabled:cursor-not-allowed"
+            required
+          />
+        </div>
 
-        {/* Video category selection */}
+        {/* Category */}
         <select
           name="category"
           value={formData.category}
           onChange={handleChange}
-          className="rounded-xl border p-3 outline-none focus:ring-2 focus:ring-blue-500"
+          disabled={loading}
+          className="rounded-xl border p-3 outline-none focus:ring-2 focus:ring-blue-500 disabled:bg-gray-100 disabled:cursor-not-allowed"
           required
         >
           <option value="">Select Category</option>
@@ -126,12 +152,17 @@ const UploadVideo = () => {
           <option value="Entertainment">Entertainment</option>
         </select>
 
-        {/* Submit upload button */}
+        {/* Upload Button */}
         <button
           type="submit"
-          className="rounded-xl bg-blue-600 py-3 text-white transition hover:bg-blue-700"
+          disabled={loading}
+          className={`rounded-xl py-3 text-white font-semibold transition duration-300 ${
+            loading
+              ? "bg-gray-500 cursor-not-allowed"
+              : "bg-blue-600 hover:bg-blue-700"
+          }`}
         >
-          Upload Video
+          {loading ? "Uploading..." : "Upload Video"}
         </button>
       </form>
     </div>

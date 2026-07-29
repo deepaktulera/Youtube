@@ -19,20 +19,20 @@ const AppLayout = ({ enableSearch = false, layoutType = "default" }) => {
   const getMainClass = () => {
     if (layoutType === "channel") {
       return isSidebarOpen
-        ? "pt-14 transition-all duration-300 lg:pl-40"
-        : "pt-14 transition-all duration-300 lg:pl-20";
+        ? "pt-15 transition-all duration-300 lg:pl-40"
+        : "pt-15 transition-all duration-300 lg:pl-20";
     }
 
     if (layoutType === "watch") {
       return isSidebarOpen
-        ? "pt-14 transition-all duration-300 lg:pl-40"
-        : "pt-14 transition-all duration-300 lg:pl-5";
+        ? "pt-15 transition-all duration-300 lg:pl-40"
+        : "pt-15 transition-all duration-300 lg:pl-5";
     }
 
     // Home layout
     return isSidebarOpen
-      ? "pt-14 transition-all duration-300 md:pl-52"
-      : "pt-14 transition-all duration-300 lg:pl-15";
+      ? "pt-15 transition-all duration-300 md:pl-52"
+      : "pt-15 transition-all duration-300 lg:pl-15";
   };
 
   return (

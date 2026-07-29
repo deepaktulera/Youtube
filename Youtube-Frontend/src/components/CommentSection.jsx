@@ -119,7 +119,7 @@ const CommentSection = ({ videoId }) => {
         {comments.map((comment) => (
           <div
             key={comment._id}
-            className="mb-3 border-b border-b-lime-800 rounded-xl p-2"
+            className="mb-3 rounded-xl p-2"
           >
             {/* Comment author */}
             <h3 className="font-semibold">{comment.user.name}</h3>
@@ -173,10 +173,9 @@ const CommentSection = ({ videoId }) => {
 
                     {/* Comment action menu */}
                     {showMenu && selectedComment === comment._id && (
-                      <div className="absolute right-0 mt-2 w-24 rounded border bg-white shadow">
+                      <div className="absolute flex flex-col right-5 top-0 w-24 rounded border bg-white shadow">
                         {/* Edit action */}
-                        <button
-                          className="block w-full px-3 py-2 text-left hover:bg-gray-100"
+                        <button className="text-black py-1 px-2 text-md cursor-pointer hover:bg-gray-200"
                           onClick={() => {
                             setEditingId(comment._id);
                             setEditingText(comment.text);
@@ -189,15 +188,14 @@ const CommentSection = ({ videoId }) => {
                         </button>
 
                         {/* Delete action */}
-                        <button
-                          className="block w-full px-3 py-2 text-left text-red-600 hover:bg-gray-100"
+                        <button className="text-red-500 py-1 px-2 text-md cursor-pointer hover:bg-gray-200"
                           onClick={() => {
                             handleDeleteComment(comment._id);
-
+                            
                             setShowMenu(false);
                             setSelectedComment(null);
                           }}
-                        >
+                          >
                           Delete
                         </button>
                       </div>
