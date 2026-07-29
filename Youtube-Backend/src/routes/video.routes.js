@@ -11,6 +11,7 @@ import {
   dislikeVideo,
   updateViews,
 } from "../controllers/video.controller.js";
+import upload from "../middleware/multer.js";
 
 import { verifyToken } from "../middleware/verifyToken.js";
 
@@ -21,7 +22,15 @@ const router = express.Router();
 router.get("/videos", fetchVideos);
 
 // Upload new video
-router.post("/video/upload", uploadVideo);
+router.post(
+  "/video/upload",
+  verifyToken,
+  upload.fields([
+    { name: "thumbnail", maxCount: 1 },
+    { name: "video", maxCount: 1 },
+  ]),
+  uploadVideo
+);
 
 // Get single video by ID
 router.get("/video/:id", fetchVideo);

@@ -7,8 +7,8 @@ import { useNavigate } from "react-router-dom";
 const data = {
   title: "",
   description: "",
-  thumbnailUrl: "",
-  videoUrl: "",
+  thumbnail: null,
+  video: null,
   category: "",
   uploader: localStorage.getItem("username") || "",
 };
@@ -22,34 +22,36 @@ const UploadVideo = () => {
 
   // Update form values when input changes
   const handleChange = ({ target }) => {
-    const { name, value } = target;
+    const { name, value, files } = target;
 
     setFormData((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: files ? files[0] : value,
     }));
   };
 
   // Handle video upload submission
   const handleSubmit = async (e) => {
-    // Prevent page refresh
     e.preventDefault();
 
     try {
-      // Send video details to backend
-      await uploadVideo(formData);
+      const data = new FormData();
 
-      // Show success message
-      toast.success("Video uploaded successfully!");
+      data.append("title", formData.title);
+      data.append("description", formData.description);
+      data.append("category", formData.category);
+      data.append("uploader", formData.uploader);
 
-      // Reset form after upload
-      setFormData(data);
+      data.append("thumbnail", formData.thumbnail);
+      data.append("video", formData.video);
 
-      // Redirect to home page
+      await uploadVideo(data);
+
+      toast.success("Video uploaded successfully");
+
       navigate("/");
     } catch (error) {
-      // Show upload error message
-      toast.error(error.response?.data?.message || "Something went wrong");
+      toast.error(error.response?.data?.message);
     }
   };
 
@@ -90,23 +92,19 @@ const UploadVideo = () => {
 
         {/* Thumbnail URL input */}
         <input
-          type="text"
-          name="thumbnailUrl"
-          placeholder="Thumbnail URL"
-          value={formData.thumbnailUrl}
+          type="file"
+          name="thumbnail"
+          accept="image/*"
           onChange={handleChange}
-          className="rounded-xl border p-3 outline-none focus:ring-2 focus:ring-blue-500"
           required
         />
 
         {/* Video URL input */}
         <input
-          type="text"
-          name="videoUrl"
-          placeholder="Video URL"
-          value={formData.videoUrl}
+          type="file"
+          name="video"
+          accept="video/*"
           onChange={handleChange}
-          className="rounded-xl border p-3 outline-none focus:ring-2 focus:ring-blue-500"
           required
         />
 

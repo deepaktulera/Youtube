@@ -14,35 +14,45 @@ const CreateChannel = () => {
   const [formData, setFormData] = useState({
     channelname: "",
     channeldescription: "",
-    avatar: "",
-    channelbanner: "",
+    avatar: null,
+    channelbanner: null,
   });
 
   // Update form state when input changes
   const handleChange = ({ target }) => {
-    const { name, value } = target;
+    const { name, value, files } = target;
 
     setFormData((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: files ? files[0] : value,
     }));
   };
 
   // Handle channel creation
   const handleSubmit = async (e) => {
-    // Prevent default form submission
     e.preventDefault();
 
     try {
-      // Send channel data to backend
-      await createChannel(username, formData);
+      const data = new FormData();
 
-      // Show success message and redirect
+      data.append("channelname", formData.channelname);
+      data.append("channeldescription", formData.channeldescription);
+
+      if (formData.avatar) {
+        data.append("avatar", formData.avatar);
+      }
+
+      if (formData.channelbanner) {
+        data.append("channelbanner", formData.channelbanner);
+      }
+
+      await createChannel(username, data);
+
       toast.success("Channel created successfully!");
+
       navigate(`/channel/${username}`);
     } catch (error) {
-      // Handle creation error
-      toast.error("Unable to create channel!");
+      toast.error(error.response?.data?.message || "Unable to create channel!");
     }
   };
 
@@ -81,19 +91,19 @@ const CreateChannel = () => {
 
           {/* Avatar URL input */}
           <input
-            type="text"
+            type="file"
             name="avatar"
-            value={formData.avatar}
+            accept="image/*"
             onChange={handleChange}
-            placeholder="Avatar URL (Optional)"
+            placeholder="Avatar (Optional)"
             className="w-full rounded border p-3 outline-none focus:ring-2 focus:ring-gray-300"
           />
 
           {/* Banner URL input */}
           <input
-            type="text"
+            type="file"
             name="channelbanner"
-            value={formData.channelbanner}
+            accept="image/*"
             onChange={handleChange}
             placeholder="Banner URL (Optional)"
             className="w-full rounded border p-3 outline-none focus:ring-2 focus:ring-gray-300"

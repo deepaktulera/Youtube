@@ -60,39 +60,42 @@ export const fetchVideo = async (req, res) => {
 // Upload a new video
 export const uploadVideo = async (req, res) => {
   try {
-    // Get video details
-    const { title, description, thumbnailUrl, videoUrl, category, uploader } =
-      req.body;
+    const { title, description, category, uploader } = req.body;
+
+    // Get uploaded file URLs
+    const thumbnailUrl = req.files.thumbnail[0].path;
+    const videoUrl = req.files.video[0].path;
 
     // Find uploader's channel
     const channel = await Channel.findOne({ username: uploader });
 
-    // Check if channel exists
     if (!channel) {
       return res.status(404).json({
-        message: "Channel not found. Please create a channel first.",
+        message: "Channel not found",
       });
     }
 
-    // Create new video
+    // Save video to MongoDB
     const newVideo = await Video.create({
       title,
       description,
       thumbnailUrl,
       videoUrl,
       category,
+      channel: channel.channelname, // or channel.username (see note below)
       uploader,
-      channel: channel.channelname,
     });
 
-    // Return success response
     res.status(201).json({
+      success: true,
       message: "Video uploaded successfully",
       video: newVideo,
     });
   } catch (error) {
-    // Handle server error
+    console.log(error);
+
     res.status(500).json({
+      success: false,
       message: error.message,
     });
   }
@@ -122,10 +125,16 @@ export const updateVideo = async (req, res) => {
       message: "Video updated successfully",
       video: updatedVideo,
     });
-  } catch (error) {
-    // Handle server error
+  }
+  catch (error) {
+    console.log("===== FULL ERROR =====");
+    console.dir(error, { depth: null });
+    console.log("======================");
+
     res.status(500).json({
+      success: false,
       message: error.message,
+      error,
     });
   }
 };

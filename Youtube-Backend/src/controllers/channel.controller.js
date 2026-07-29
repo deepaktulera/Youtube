@@ -7,7 +7,15 @@ export const createChannel = async (req, res) => {
     const { username } = req.params;
 
     // Get channel details from request
-    const { channelname, channeldescription, avatar, channelbanner } = req.body;
+    const { channelname, channeldescription } = req.body;
+
+    const avatar = req.files?.avatar
+      ? req.files.avatar[0].path
+      : "";
+
+    const channelbanner = req.files?.channelbanner
+      ? req.files.channelbanner[0].path
+      : "";
 
     // Get logged-in user ID
     const owner = req.user.id;
@@ -57,7 +65,6 @@ export const showChannel = async (req, res) => {
     // Return channel data
     res.status(200).json(channel);
   } catch (error) {
-    // Handle server error
     res.status(500).json({
       message: error.message,
     });
