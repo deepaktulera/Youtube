@@ -55,18 +55,28 @@ const EditVideo = () => {
 
   // Submit updated video information
   const handleSubmit = async (e) => {
-    // Prevent page refresh
     e.preventDefault();
 
     try {
-      // Send updated video data to backend
-      await updateVideo(id, formData);
+      const data = new FormData();
 
-      // Show success message and redirect
+      data.append("title", formData.title);
+      data.append("description", formData.description);
+      data.append("category", formData.category);
+
+      if (formData.thumbnail) {
+        data.append("thumbnail", formData.thumbnail);
+      }
+
+      if (formData.video) {
+        data.append("video", formData.video);
+      }
+
+      await updateVideo(id, data);
+
       toast.success("Video updated successfully!");
       navigate(`/watch/${id}`);
     } catch (error) {
-      // Handle update error
       toast.error("Video update failed!");
     }
   };
@@ -104,23 +114,23 @@ const EditVideo = () => {
             required
           />
 
-          {/* Thumbnail URL input */}
+          {/* Thumbnail input */}
           <input
-            type="text"
+            type="file"
             name="thumbnail"
-            value={formData.thumbnail}
+            accept="image/*"
+            placeholder="Image"
             onChange={handleChange}
-            placeholder="Thumbnail"
             className="w-full rounded border p-3 outline-none"
           />
 
           {/* Video URL input */}
           <input
-            type="text"
-            name="videoUrl"
-            value={formData.videoUrl}
+            type="file"
+            name="video"
+            accept="video/*"
             onChange={handleChange}
-            placeholder="Video URL"
+            placeholder="Video"
             className="w-full rounded border p-3 outline-none"
           />
 

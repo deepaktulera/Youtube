@@ -26,7 +26,23 @@ router.post(
 );
 
 // Update channel details (Protected route)
-router.patch("/channel/:username", verifyToken, updateChannel);
+router.patch(
+  "/channel/:username",
+  (req, res, next) => {
+    console.log("PATCH route reached");
+    next();
+  },
+  verifyToken,
+  upload.fields([
+    { name: "avatar", maxCount: 1 },
+    { name: "channelbanner", maxCount: 1 },
+  ]),
+  (req, res, next) => {
+    console.log("Multer finished");
+    next();
+  },
+  updateChannel
+);
 
 // Delete channel (Protected route)
 router.delete("/channel/:id", verifyToken, deleteChannel);

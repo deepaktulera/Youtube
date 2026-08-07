@@ -89,7 +89,7 @@ const CreateChannel = () => {
             required
           />
 
-          {/* Avatar URL input */}
+          {/* Avatar input */}
           <input
             type="file"
             name="avatar"
@@ -99,13 +99,13 @@ const CreateChannel = () => {
             className="w-full rounded border p-3 outline-none focus:ring-2 focus:ring-gray-300"
           />
 
-          {/* Banner URL input */}
+          {/* Banner input */}
           <input
             type="file"
             name="channelbanner"
             accept="image/*"
             onChange={handleChange}
-            placeholder="Banner URL (Optional)"
+            placeholder="Banner (Optional)"
             className="w-full rounded border p-3 outline-none focus:ring-2 focus:ring-gray-300"
           />
 

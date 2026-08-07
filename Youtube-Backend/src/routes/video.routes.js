@@ -39,7 +39,15 @@ router.get("/video/:id", fetchVideo);
 router.get("/videos/channel/:uploader", getChannelVideos);
 
 // Update video details (Protected route)
-router.patch("/video/:id", verifyToken, updateVideo);
+router.patch(
+  "/video/:id",
+  verifyToken,
+  upload.fields([
+    { name: "thumbnail", maxCount: 1 },
+    { name: "video", maxCount: 1 },
+  ]),
+  updateVideo
+);
 
 // Delete video (Protected route)
 router.delete("/video/:id", verifyToken, deleteVideo);

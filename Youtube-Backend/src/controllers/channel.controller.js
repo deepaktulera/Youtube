@@ -63,7 +63,10 @@ export const showChannel = async (req, res) => {
     }
 
     // Return channel data
-    res.status(200).json(channel);
+    res.status(200).json({
+      success: true,
+      channel,
+    });
   } catch (error) {
     res.status(500).json({
       message: error.message,
@@ -74,49 +77,55 @@ export const showChannel = async (req, res) => {
 // Update channel
 export const updateChannel = async (req, res) => {
   try {
-    // Get username
     const { username } = req.params;
 
-    // Find channel
     const channel = await Channel.findOne({ username });
 
-    // Check if channel exists
     if (!channel) {
       return res.status(404).json({
         message: "Channel doesn't exist",
       });
     }
 
-    // Check channel ownership
     if (channel.owner.toString() !== req.user.id) {
       return res.status(403).json({
         message: "Unauthorized",
       });
     }
 
-    // Get updated data
-    const { channelname, channeldescription, avatar, channelbanner } = req.body;
+    const { channelname, channeldescription } = req.body;
 
-    // Update channel fields
-    channel.channelname = channelname;
-    channel.channeldescription = channeldescription;
-    channel.avatar = avatar;
-    channel.channelbanner = channelbanner;
+    if (channelname) {
+      channel.channelname = channelname;
+    }
 
-    // Save changes
+    if (channeldescription) {
+      channel.channeldescription = channeldescription;
+    }
+
+    // Replace avatar only if a new file was uploaded
+    if (req.files?.avatar) {
+      channel.avatar = req.files.avatar[0].path;
+    }
+
+    // Replace banner only if a new file was uploaded
+    if (req.files?.channelbanner) {
+      channel.channelbanner = req.files.channelbanner[0].path;
+    }
+
     await channel.save();
 
-    // Return updated channel
     res.status(200).json({
+      success: true,
       message: "Channel updated successfully",
       channel,
     });
-  } catch (error) {
-    // Print error
+  }
+  catch (error) {
     console.log(error);
 
-    // Handle server error
     res.status(500).json({
+      success: false,
       message: error.message,
     });
   }

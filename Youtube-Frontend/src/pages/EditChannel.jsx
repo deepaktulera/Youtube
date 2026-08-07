@@ -14,8 +14,8 @@ const EditChannel = () => {
   const [formData, setFormData] = useState({
     channelname: "",
     channeldescription: "",
-    avatar: "",
-    channelbanner: "",
+    avatar: null,
+    channelbanner: null,
   });
 
   // Fetch existing channel data
@@ -30,8 +30,8 @@ const EditChannel = () => {
         setFormData({
           channelname: data.channelname || "",
           channeldescription: data.channeldescription || "",
-          avatar: data.avatar || "",
-          channelbanner: data.channelbanner || "",
+          avatar: null,
+          channelbanner: null,
         });
       } catch (error) {
         // Handle fetch error
@@ -44,28 +44,38 @@ const EditChannel = () => {
 
   // Update form values when input changes
   const handleChange = ({ target }) => {
-    const { name, value } = target;
+    const { name, value, files } = target;
 
     setFormData((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: files ? files[0] : value,
     }));
   };
 
   // Submit updated channel details
   const handleSubmit = async (e) => {
-    // Prevent page reload
     e.preventDefault();
 
     try {
-      // Send updated channel data
-      await updateChannel(username, formData);
+      const data = new FormData();
 
-      // Show success message and redirect
+      data.append("channelname", formData.channelname);
+      data.append("channeldescription", formData.channeldescription);
+
+      if (formData.avatar) {
+        data.append("avatar", formData.avatar);
+      }
+
+      if (formData.channelbanner) {
+        data.append("channelbanner", formData.channelbanner);
+      }
+
+      await updateChannel(username, data);
+
       toast.success("Profile updated successfully!");
+
       navigate(`/channel/${username}`);
     } catch (error) {
-      // Handle update error
       toast.error("Profile update failed!");
     }
   };
@@ -103,25 +113,35 @@ const EditChannel = () => {
             required
           />
 
-          {/* Profile image URL input */}
-          <input
-            type="text"
-            name="avatar"
-            value={formData.avatar}
-            onChange={handleChange}
-            placeholder="Avatar URL"
-            className="w-full rounded border p-3 outline-none"
-          />
+          {/* Profile image input */}
+          <div>
+            <label className="mb-2 block font-medium">
+              Channel Avatar
+            </label>
 
-          {/* Banner image URL input */}
-          <input
-            type="text"
-            name="channelbanner"
-            value={formData.channelbanner}
-            onChange={handleChange}
-            placeholder="Banner URL"
-            className="w-full rounded border p-3 outline-none"
-          />
+            <input
+              type="file"
+              name="avatar"
+              accept="image/*"
+              onChange={handleChange}
+              className="w-full"
+            />
+          </div>
+
+          {/* Banner image input */}
+          <div>
+            <label className="mb-2 block font-medium">
+              Channel Banner
+            </label>
+
+            <input
+              type="file"
+              name="channelbanner"
+              accept="image/*"
+              onChange={handleChange}
+              className="w-full"
+            />
+          </div>
 
           {/* Save changes button */}
           <button

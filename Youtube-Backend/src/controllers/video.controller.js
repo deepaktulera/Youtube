@@ -104,37 +104,47 @@ export const uploadVideo = async (req, res) => {
 // Update video
 export const updateVideo = async (req, res) => {
   try {
-    // Get video ID
     const { id } = req.params;
 
-    // Update video
-    const updatedVideo = await Video.findByIdAndUpdate(id, req.body, {
-      new: true,
-      runValidators: true,
-    });
+    const video = await Video.findById(id);
 
-    // Check if video exists
-    if (!updatedVideo) {
+    if (!video) {
       return res.status(404).json({
         message: "Video not found",
       });
     }
 
-    // Return updated video
-    res.status(200).json({
-      message: "Video updated successfully",
-      video: updatedVideo,
-    });
-  }
-  catch (error) {
-    console.log("===== FULL ERROR =====");
-    console.dir(error, { depth: null });
-    console.log("======================");
+    const {
+      title,
+      description,
+      category,
+    } = req.body;
 
+    if (title) video.title = title;
+    if (description) video.description = description;
+    if (category) video.category = category;
+
+    // Replace thumbnail only if a new one was uploaded
+    if (req.files?.thumbnail) {
+      video.thumbnailUrl = req.files.thumbnail[0].path;
+    }
+
+    // Replace video only if a new one was uploaded
+    if (req.files?.video) {
+      video.videoUrl = req.files.video[0].path;
+    }
+
+    await video.save();
+
+    res.status(200).json({
+      success: true,
+      message: "Video updated successfully",
+      video,
+    });
+  } catch (error) {
     res.status(500).json({
       success: false,
       message: error.message,
-      error,
     });
   }
 };
